@@ -24,10 +24,11 @@ var validLine = function (line) {
   // checksum reference is provided as a hex value after the * in the message.
   var checkVal = 0;
   var parts = line.split('*');
+  
   for (var i = 1; i < parts[0].length; i++) {
     checkVal = checkVal ^ parts[0].charCodeAt(i);
   }
-  ;
+
   return checkVal == parseInt(parts[1], 16);
 };
 
@@ -93,14 +94,3 @@ exports.encode = function (talker, msg) {
     throw Error("No encoder for type:" + msg.type);
   }
 }
-
-exports.createDefaultTransformer = function (options) {
-  var stream = require('through')(function (data) {
-    try {
-      stream.queue(exports.parse(data));
-    } catch (e) {
-    }
-  });
-  return stream;
-};
-
