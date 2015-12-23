@@ -24,6 +24,9 @@
   "bugs": {
     "url": "https://github.com/101100/pca9685/issues"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -31,8 +34,8 @@
     "definition": "index.d.ts"
   },
   "devDependencies": {
-    "mocha": "^1.13",
-    "should": "^2.0"
+    "mocha": "^2.3",
+    "should": "^8.0"
   },
   "dependencies" : {
   }
