@@ -21,7 +21,7 @@ describe('GLL', function () {
       latPole: 'N',
       lon: 2332.34,
       lonPole: 'E',
-      timestamp: new Date(2013, 4, 1, 21,17 - new Date().getTimezoneOffset(),22),
+      timestamp: new Date(Date.UTC(2013, 4, 1, 21, 17, 22)),
       status: 'valid'
     });
     nmeaMsg.should.equal("$IIGLL,6005.06,N,2332.34,E,211722,A,D*62");
