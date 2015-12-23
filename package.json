@@ -1,18 +1,39 @@
 {
-    "name": "nmea",
-    "description": "A parser for the NMEA 0183 GPS Receiver protocol",
-    "version": "0.0.9",
-    "author": "James Penn <james@jamespenn.co.uk>",
-    "main": "nmea",
-    "keywords": ["gps", "nmea"],
-    "repository": "git://github.com/jamesp/node-nmea",
-    "devDependencies": {
-        "should": "~2.0.2",
-      "mocha": "1.13",
-      "line-reader": "0.2"
-    },
-    "dependencies" : {
-      "through": ">=2.2.7 <3",
-      "JSONStream" : "0.7"
+  "name": "nmea-simple",
+  "version": "1.0.0",
+  "description": "A parser for the NMEA 0183 GPS Receiver protocol",
+  "author": {
+    "name": "Jason Heard",
+    "email": "jasonpheard@gmail.com"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/101100/nmea-simple/blob/master/LICENSE"
     }
+  ],
+  "main": "index.js",
+  "keywords": [
+    "gps",
+    "nmea"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/101100/nmea-simple"
+  },
+  "bugs": {
+    "url": "https://github.com/101100/pca9685/issues"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "typescript": {
+    "definition": "index.d.ts"
+  },
+  "devDependencies": {
+    "mocha": "^1.13",
+    "should": "^2.0"
+  },
+  "dependencies" : {
+  }
 }
