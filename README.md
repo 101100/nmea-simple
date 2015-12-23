@@ -1,3 +1,6 @@
+[![NPM version](https://badge.fury.io/js/xbee-rx.svg)](http://badge.fury.io/js/nmea-simple)
+[![Travis CI Build Status](https://api.travis-ci.org/101100/xbee-rx.svg)](https://travis-ci.org/101100/nmea-simple)
+
 # NMEA 0183 sentence parser and encoder
 
 This library parses some NMEA 0183 sentences.  These are typically used by GPS
