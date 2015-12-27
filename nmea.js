@@ -7,6 +7,7 @@ var GGA = require('./codecs/GGA.js');
 var GLL = require('./codecs/GLL.js');
 var GSA = require('./codecs/GSA.js');
 var GSV = require('./codecs/GSV.js');
+var HDG = require('./codecs/HDG.js');
 var HDM = require('./codecs/HDM.js');
 var HDT = require('./codecs/HDT.js');
 var MWV = require('./codecs/MWV.js');
@@ -40,6 +41,7 @@ exports.traditionalDecoders = {
     GLL: GLL.decode,
     GSA: GSA.decode,
     GSV: GSV.decode,
+    HDG: HDG.decode,
     HDM: HDM.decode,
     HDT: HDT.decode,
     MWV: MWV.decode,
