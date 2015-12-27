@@ -1,7 +1,7 @@
 var should = require('should');
 
-describe('MWV parsing', function () {
-  it('parses ok', function () {
+describe('MWV', function () {
+  it('parses', function () {
     var msg = require("../nmea.js").parse("$IIMWV,017,R,02.91,N,A*2F");
     msg.should.have.property('sentence', 'MWV');
     msg.should.have.property('type', 'wind');
@@ -11,10 +11,8 @@ describe('MWV parsing', function () {
     msg.should.have.property('units', 'N');
     msg.should.have.property('status', 'A');
   });
-});
 
-describe('MWV encoding', function () {
-  it('parses ok', function () {
+  it('encoding ok', function () {
     var nmeaMsg = require("../nmea.js").encode('XX', {
       type: 'wind',
       angle: 17,

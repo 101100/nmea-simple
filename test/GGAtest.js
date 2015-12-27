@@ -1,6 +1,6 @@
 var should = require('should');
 
-describe('GGA ', function () {
+describe('GGA', function () {
   it('parses', function () {
     var msg = require("../nmea.js").parse("$IIGGA,123519,4807.04,N,1131.00,E,1,8,0.9,545.9,M,46.9,M,,*52");
     msg.should.have.property('type', 'fix');
@@ -19,17 +19,14 @@ describe('GGA ', function () {
     msg.should.have.property('geoidalSep', 46.9);
     msg.should.have.property('geoidalSepUnit', 'M');
   });
-});
 
-
-describe('GGA', function () {
   it('encodes ok', function () {
     var nmeaMsg = require("../nmea.js").encode('II', {
       type: 'fix',
       timestamp: new Date(Date.UTC(2013, 1, 1, 12, 35, 19)),
-      lat: 4807.04, 
+      lat: 4807.04,
       latPole: 'N',
-      lon: 1131.00, 
+      lon: 1131.00,
       lonPole: 'E',
       fixType: 'fix',
       numSat: 8,
