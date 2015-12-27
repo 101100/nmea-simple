@@ -10,6 +10,7 @@ var GSV = require('./codecs/GSV.js');
 var HDG = require('./codecs/HDG.js');
 var HDM = require('./codecs/HDM.js');
 var HDT = require('./codecs/HDT.js');
+var MTK = require('./codecs/MTK.js');
 var MWV = require('./codecs/MWV.js');
 var RDID = require('./codecs/RDID.js');
 var RMC = require('./codecs/RMC.js');
@@ -45,6 +46,7 @@ exports.traditionalDecoders = {
     HDG: HDG.decode,
     HDM: HDM.decode,
     HDT: HDT.decode,
+    MTK: MTK.decode,
     MWV: MWV.decode,
     RDID: RDID.decode,
     RMC: RMC.decode,
@@ -59,6 +61,7 @@ exports.encoders[GGA.TYPE] = GGA;
 exports.encoders[GLL.TYPE] = GLL;
 exports.encoders[HDM.TYPE] = HDM;
 exports.encoders[HDT.TYPE] = HDT;
+exports.encoders[MTK.TYPE] = MTK;
 exports.encoders[MWV.TYPE] = MWV;
 exports.encoders[VTG.TYPE] = VTG;
 
@@ -74,7 +77,12 @@ exports.parse = function (line) {
             talker_id = fields[0].substr(1, 2);
             msg_fmt = fields[0].substr(3);
         }
+        fields[0] = msg_fmt;
+
         var parser = exports.traditionalDecoders[msg_fmt];
+        if (!parser && msg_fmt.substr(0, 3) === "MTK") {
+            parser = exports.traditionalDecoders["MTK"];
+        }
         if (parser) {
             var val = parser(fields);
             val.talker_id = talker_id;
