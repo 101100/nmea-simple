@@ -10,4 +10,3 @@ describe('RDID', function () {
     msg.should.have.property('heading', 47.31);
   });
 });
-

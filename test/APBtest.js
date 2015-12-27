@@ -21,4 +21,3 @@ describe('APB', function () {
     msg.should.have.property('headingDestType', 'M');
   });
 });
-

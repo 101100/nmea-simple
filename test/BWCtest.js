@@ -16,4 +16,3 @@ describe('BWC', function () {
     msg.should.have.property('id', 'EGLM');
   });
 });
-
