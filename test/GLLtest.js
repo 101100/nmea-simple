@@ -12,7 +12,7 @@ describe('GLL', function () {
     msg.should.have.property('status', 'valid');
   });
 
-  it('encodes ok', function () {
+  it('encodes', function () {
     var nmeaMsg = require("../nmea.js").encode('II', {
       type: 'geo-position',
       lat: 6005.06,

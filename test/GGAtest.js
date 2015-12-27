@@ -20,7 +20,7 @@ describe('GGA', function () {
     msg.should.have.property('geoidalSepUnit', 'M');
   });
 
-  it('encodes ok', function () {
+  it('encodes', function () {
     var nmeaMsg = require("../nmea.js").encode('II', {
       type: 'fix',
       timestamp: new Date(Date.UTC(2013, 1, 1, 12, 35, 19)),

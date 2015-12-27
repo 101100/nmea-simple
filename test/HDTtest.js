@@ -8,7 +8,7 @@ describe('HDT', function () {
     msg.should.have.property('heading', 234.2);
   });
 
-  it('encodes ok', function () {
+  it('encodes', function () {
     var nmeaMsg = require("../nmea.js").encode('II', {
       type: 'heading-info-true',
       heading: 234.2

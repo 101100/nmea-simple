@@ -10,7 +10,7 @@ describe('DBT', function () {
     msg.should.have.property('depthFathoms', 5.99);
   });
 
-  it('encodes ok', function () {
+  it('encodes', function () {
     var nmeaMsg = require("../nmea.js").encode('II', {
       type: 'depth-transducer',
       depthFeet: 36.41,
