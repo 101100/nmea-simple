@@ -1,18 +1,18 @@
 // A NMEA-0183 parser based on the format given here: http://www.tronico.fi/OH6NT/docs/NMEA0183.pdf
 
-var MWV = require('./codecs/MWV.js');
-var VTG = require('./codecs/VTG.js');
-var DBT = require('./codecs/DBT.js');
-var GLL = require('./codecs/GLL.js');
-var BWC = require('./codecs/BWC.js');
-var GSV = require('./codecs/GSV.js');
-var GSA = require('./codecs/GSA.js');
-var GGA = require('./codecs/GGA.js');
-var RMC = require('./codecs/RMC.js');
 var APB = require('./codecs/APB.js');
-var HDT = require('./codecs/HDT.js');
+var BWC = require('./codecs/BWC.js');
+var DBT = require('./codecs/DBT.js');
+var GGA = require('./codecs/GGA.js');
+var GLL = require('./codecs/GLL.js');
+var GSA = require('./codecs/GSA.js');
+var GSV = require('./codecs/GSV.js');
 var HDM = require('./codecs/HDM.js');
+var HDT = require('./codecs/HDT.js');
+var MWV = require('./codecs/MWV.js');
 var RDID = require('./codecs/RDID.js');
+var RMC = require('./codecs/RMC.js');
+var VTG = require('./codecs/VTG.js');
 
 
 // export helpers
@@ -33,30 +33,30 @@ var validLine = function (line) {
 };
 
 exports.traditionalDecoders = {
-    GGA: GGA.decode,
-    RMC: RMC.decode,
     APB: APB.decode,
-    GSA: GSA.decode,
-    GSV: GSV.decode,
     BWC: BWC.decode,
     DBT: DBT.decode,
-    MWV: MWV.decode,
-    VTG: VTG.decode,
+    GGA: GGA.decode,
     GLL: GLL.decode,
-    HDT: HDT.decode,
+    GSA: GSA.decode,
+    GSV: GSV.decode,
     HDM: HDM.decode,
+    HDT: HDT.decode,
+    MWV: MWV.decode,
     RDID: RDID.decode,
+    RMC: RMC.decode,
+    VTG: VTG.decode
 };
 
 exports.encoders = new Object();
 
+exports.encoders[DBT.TYPE] = DBT;
+exports.encoders[GGA.TYPE] = GGA;
+exports.encoders[GLL.TYPE] = GLL;
+exports.encoders[HDM.TYPE] = HDM;
+exports.encoders[HDT.TYPE] = HDT;
 exports.encoders[MWV.TYPE] = MWV;
 exports.encoders[VTG.TYPE] = VTG;
-exports.encoders[DBT.TYPE] = DBT;
-exports.encoders[GLL.TYPE] = GLL;
-exports.encoders[HDT.TYPE] = HDT;
-exports.encoders[GGA.TYPE] = GGA;
-exports.encoders[HDM.TYPE] = HDM;
 
 exports.parse = function (line) {
     if (validLine(line)) {
