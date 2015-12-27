@@ -1,26 +1,28 @@
-var helpers = require("../helpers.js")
 /*
- === HDT - Heading - True ===
-
- ------------------------------------------------------------------------------
-        1   2 3
-        |   | |
- $--HDT,x.x,T*hh
- ------------------------------------------------------------------------------
-
- Field Number:
-
- 1) Heading Degrees, true
- 2) T = True
- 3) Checksum
+ * === HDT - Heading - True ===
+ *
+ * ------------------------------------------------------------------------------
+ *        1   2 3
+ *        |   | |
+ * $--HDT,x.x,T*hh<CR><LF>
+ * ------------------------------------------------------------------------------
+ *
+ * Field Number:
+ * 1. Heading degrees, true
+ * 2. T = True
+ * 3. Checksum
  */
-exports.TYPE = 'heading-info';
+
+var helpers = require("../helpers.js")
+
+
 exports.ID = 'HDT';
+exports.TYPE = 'heading-info-true';
 
 exports.decode = function (fields) {
   return {
     sentence: exports.ID,
-    type: 'heading-info',
+    type: exports.TYPE,
     heading: +fields[1]
   }
 };

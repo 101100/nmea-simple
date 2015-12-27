@@ -1,7 +1,7 @@
 {
   "name": "nmea-simple",
   "version": "1.0.0",
-  "description": "A parser for the NMEA 0183 GPS Receiver protocol",
+  "description": "NMEA 0183 sentence parser and encoder",
   "author": {
     "name": "Jason Heard",
     "email": "jasonpheard@gmail.com"
@@ -12,10 +12,13 @@
       "url": "https://github.com/101100/nmea-simple/blob/master/LICENSE"
     }
   ],
-  "main": "index.js",
+  "main": "nmea.js",
   "keywords": [
+    "nmea",
+    "0183",
+    "nmea-0183",
     "gps",
-    "nmea"
+    "parser"
   ],
   "repository": {
     "type": "git",
@@ -25,13 +28,10 @@
     "url": "https://github.com/101100/pca9685/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha -R tap"
   },
   "engines": {
     "node": ">= 0.10.0"
-  },
-  "typescript": {
-    "definition": "index.d.ts"
   },
   "devDependencies": {
     "mocha": "^2.3",

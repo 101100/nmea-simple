@@ -1,26 +1,28 @@
-var helpers = require("../helpers.js")
 /*
- === HDM - Heading - Magnetic ===
-
- ------------------------------------------------------------------------------
-        1   2 3
-        |   | |
- $--HDM,x.x,M*hh
- ------------------------------------------------------------------------------
-
- Field Number:
-
- 1) Heading Degrees, magnetic
- 2) M = Magnetic
- 3) Checksum
+ * === HDM - Heading - Magnetic ===
+ *
+ * ------------------------------------------------------------------------------
+ *        1   2 3
+ *        |   | |
+ * $--HDM,x.x,M*hh<CR><LF>
+ * ------------------------------------------------------------------------------
+ *
+ * Field Number:
+ * 1. Heading degrees, magnetic
+ * 2. M = Magnetic
+ * 3. Checksum
  */
-exports.TYPE = 'heading-info-magnetic';
+
+var helpers = require("../helpers.js")
+
+
 exports.ID = 'HDM';
+exports.TYPE = 'heading-info-magnetic';
 
 exports.decode = function (fields) {
   return {
     sentence: exports.ID,
-    type: 'heading-info-magnetic',
+    type: exports.TYPE,
     heading: +fields[1]
   }
 };
