@@ -13,6 +13,7 @@ var HDT = require('./codecs/HDT.js');
 var MWV = require('./codecs/MWV.js');
 var RDID = require('./codecs/RDID.js');
 var RMC = require('./codecs/RMC.js');
+var VHW = require('./codecs/VHW.js');
 var VTG = require('./codecs/VTG.js');
 
 
@@ -47,6 +48,7 @@ exports.traditionalDecoders = {
     MWV: MWV.decode,
     RDID: RDID.decode,
     RMC: RMC.decode,
+    VHW: VHW.decode,
     VTG: VTG.decode
 };
 
