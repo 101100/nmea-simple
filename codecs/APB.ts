@@ -33,26 +33,51 @@
  * 15. Checksum
  */
 
-exports.ID = 'APB';
-exports.TYPE = 'autopilot-b';
+import { parseFloatSafe } from "../helpers";
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    status1 : fields[1],
-    status2 : fields[2],
-    xteMagn : +fields[3],
-    steerDir : fields[4],
-    xteUnit : fields[5],
-    arrivalCircleStatus : fields[6],
-    arrivalPerpendicularStatus : fields[7],
-    bearingOrig2Dest : +fields[8],
-    bearingOrig2DestType : fields[9],
-    waypoint : fields[10],
-    bearing2Dest : +fields[11],
-    bearingDestType : fields[12],
-    heading2steer : +fields[13],
-    headingDestType : fields[14]
-  }
+
+export const sentenceId: "APB" = "APB";
+export const sentenceName = "Autopilot Sentence \"B\"";
+
+
+export interface APBPacket {
+    sentenceId: "APB";
+    sentenceName?: string;
+    talkerId?: string;
+    status1: string;
+    status2: string;
+    xteMagn: number;
+    steerDir: string;
+    xteUnit: string;
+    arrivalCircleStatus: string;
+    arrivalPerpendicularStatus: string;
+    bearingOrig2Dest: number;
+    bearingOrig2DestType: string;
+    waypoint: string;
+    bearing2Dest: number;
+    bearingDestType: string;
+    heading2steer: number;
+    headingDestType: string;
+}
+
+
+export function decodeSentence(fields: string[]): APBPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        status1: fields[1],
+        status2: fields[2],
+        xteMagn: parseFloatSafe(fields[3]),
+        steerDir: fields[4],
+        xteUnit: fields[5],
+        arrivalCircleStatus: fields[6],
+        arrivalPerpendicularStatus: fields[7],
+        bearingOrig2Dest: parseFloatSafe(fields[8]),
+        bearingOrig2DestType: fields[9],
+        waypoint: fields[10],
+        bearing2Dest: parseFloatSafe(fields[11]),
+        bearingDestType: fields[12],
+        heading2steer: parseFloatSafe(fields[13]),
+        headingDestType: fields[14]
+    };
 }

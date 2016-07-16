@@ -21,35 +21,49 @@
  * 8. Checksum
  */
 
-var helpers = require("../helpers.js")
+import { createNmeaChecksumFooter, encodeLatitude, encodeLongitude, encodeTime, parseLatitude, parseLongitude, parseTime } from "../helpers";
 
 
-exports.TYPE = 'geo-position';
-exports.ID = 'GLL';
+export const sentenceId: "GLL" = "GLL";
+export const sentenceName = "Geographic position - latitude/longitude";
 
-exports.decode = function(fields) {
-        return {
-            sentence: exports.ID,
-            type: 'geo-position',
-            timestamp: fields[5],
-            lat: fields[1],
-            latPole: fields[2],
-            lon: fields[3],
-            lonPole: fields[4],
-            timestamp: fields[5],
-            status: fields[6] == 'A' ? 'valid' : 'invalid'
-        };
+
+export interface GLLPacket {
+    sentenceId: "GLL";
+    sentenceName?: string;
+    talkerId?: string;
+    latitude: number;
+    longitude: number;
+    time: Date;
+    status: "valid" | "invalid";
+    faaMode?: string;
+}
+
+
+export function decodeSentence(fields: string[]): GLLPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        latitude: parseLatitude(fields[1], fields[2]),
+        longitude: parseLongitude(fields[3], fields[4]),
+        time: parseTime(fields[5]),
+        status: fields[6] === "A" ? "valid" : "invalid",
+        faaMode: fields[7]
+    };
+}
+
+
+export function encodePacket(packet: GLLPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeLatitude(packet.latitude));
+    result.push(encodeLongitude(packet.longitude));
+    result.push(encodeTime(packet.time));
+    result.push(packet.status ===  "valid" ? "A" : "V");
+    if (packet.faaMode) {
+        result.push(packet.faaMode);
     }
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID];
-  result.push(helpers.encodeDegrees(msg.lat));
-  result.push(msg.latPole);
-  result.push(helpers.encodeDegrees(msg.lon));
-  result.push(msg.lonPole);
-  result.push(helpers.encodeTime(msg.timestamp));
-  result.push('A');
-  result.push('D');
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
 }

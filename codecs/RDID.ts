@@ -1,5 +1,5 @@
 /*
- * === PRDID - RDI Proprietary Heading, Pitch, Roll ===
+ * === PRDID - RDI Proprietary Heading, Pitch, and Roll ===
  *
  * ------------------------------------------------------------------------------
  *        1   2   3   4
@@ -14,15 +14,29 @@
  * 4. Checksum
  */
 
-exports.ID = 'RDID';
-exports.TYPE = 'gyro';
+import { parseFloatSafe } from "../helpers";
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    roll: +fields[1],
-    pitch: +fields[2],
-    heading: +fields[3],
-  }
+
+export const sentenceId: "RDID" = "RDID";
+export const sentenceName = "RDI proprietary heading, pitch, and roll";
+
+
+export interface RDIDPacket {
+    sentenceId: "RDID";
+    sentenceName?: string;
+    talkerId?: string;
+    roll: number;
+    pitch: number;
+    heading: number;
+}
+
+
+export function decodeSentence(fields: string[]): RDIDPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        roll: parseFloatSafe(fields[1]),
+        pitch: parseFloatSafe(fields[2]),
+        heading: parseFloatSafe(fields[3])
+    };
 }

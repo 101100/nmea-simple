@@ -17,31 +17,47 @@
  * 6. Checksum
  */
 
-var helpers = require("../helpers.js")
+import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
 
 
-exports.ID = 'MWV';
-exports.TYPE = 'wind';
+export const sentenceId: "MWV" = "MWV";
+export const sentenceName = "Wind speed and angle";
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    angle: +fields[1],
-    reference: fields[2],
-    speed: +fields[3],
-    units: fields[4],
-    status: fields[5]
-  }
+
+export interface MWVPacket {
+    sentenceId: "MWV";
+    sentenceName?: string;
+    talkerId?: string;
+    windAngle: number;
+    reference: "relative" | "true";
+    speed: number;
+    units: "K" | "M" | "N";
+    status: "valid" | "invalid";
 }
 
-exports.encode = function(talker, msg) {
- var result = ['$' + talker + exports.ID];
-  result.push(helpers.encodeDegrees(msg.angle));
-  result.push(msg.reference);
-  result.push(helpers.encodeFixed(msg.speed, 2));
-  result.push(msg.units);
-  result.push(typeof msg.status === undefined ? 'A' : msg.status);
-  var resultMsg = result.join(',');
- return resultMsg + helpers.computeChecksum(resultMsg);
+
+export function decodeSentence(fields: string[]): MWVPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        windAngle: parseFloatSafe(fields[1]),
+        reference: fields[2] === "R" ? "relative" : "true",
+        speed: parseFloatSafe(fields[3]),
+        units: fields[4] === "K" ? "K" : fields[4] === "M" ? "M" : "N",
+        status: fields[5] === "A" ? "valid" : "invalid"
+    };
+}
+
+
+export function encodePacket(packet: MWVPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeDegrees(packet.windAngle));
+    result.push(packet.reference === "relative" ? "R" : "T");
+    result.push(encodeFixed(packet.speed, 2));
+    result.push(packet.units === "K" ? "K" : packet.units === "M" ? "M" : "N");
+    result.push(packet.status === "valid" ? "A" : "V");
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
 }

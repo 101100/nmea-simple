@@ -37,51 +37,66 @@
  * 15. Checksum
 */
 
-var helpers = require("../helpers.js")
+import { createNmeaChecksumFooter, encodeAltitude, encodeFixed, encodeGeoidalSeperation, encodeLatitude, encodeLongitude, encodeTime, encodeValue, parseFloatSafe, parseIntSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
 
 
-exports.ID = 'GGA';
-exports.TYPE = 'fix';
+export const sentenceId: "GGA" = "GGA";
+export const sentenceName = "Global Positioning System Fix Data";
 
-var FIX_TYPE = [ 'none', 'fix', 'delta', 'pps', 'rtk', 'frtk', 'estimated', 'manual', 'simulation' ];
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    timestamp: fields[1],
-    lat: fields[2],
-    latPole: fields[3],
-    lon: fields[4],
-    lonPole: fields[5],
-    fixType: FIX_TYPE[+fields[6]],
-    numSat: +fields[7],
-    horDilution: +fields[8],
-    alt: +fields[9],
-    altUnit: fields[10],
-    geoidalSep: +fields[11],
-    geoidalSepUnit: fields[12],
-    differentialAge: +fields[13],
-    differentialRefStn: fields[14]
-  };
+export type FixType = "none" | "fix" | "delta" | "pps" | "rtk" | "frtk" | "estimated" | "manual" | "simulation";
+const FixTypes: FixType[] = [ "none", "fix", "delta", "pps", "rtk", "frtk", "estimated", "manual", "simulation" ];
+
+
+export interface GGAPacket {
+    sentenceId: "GGA";
+    sentenceName?: string;
+    talkerId?: string;
+    time: Date;
+    latitude: number;
+    longitude: number;
+    fixType: FixType;
+    satellitesInView: number;
+    horizontalDilution: number;
+    altitudeMeters: number;
+    geoidalSeperation: number;
+    differentialAge?: number;
+    differentialRefStn?: string;
 }
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID];
 
-  result.push(helpers.encodeTime(msg.timestamp));
-  result.push(helpers.encodeDegrees(msg.lat));
-  result.push(msg.latPole);
-  result.push(helpers.encodeDegrees(msg.lon));
-  result.push(msg.lonPole);
-  result.push(FIX_TYPE.indexOf(msg.fixType));
-  result.push(helpers.encodeValue(msg.numSat));
-  result.push(helpers.encodeFixed(msg.horDilution, 1));
-  result.push(helpers.encodeAltitude(msg.alt));
-  result.push(helpers.encodeGeoidalSeperation(msg.geoidalSep));
-  result.push(helpers.encodeFixed(msg.differentialAge, 2));
-  result.push(msg.differentialRefStn);
+export function decodeSentence(fields: string[]): GGAPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        time: parseTime(fields[1]),
+        latitude: parseLatitude(fields[2], fields[3]),
+        longitude: parseLongitude(fields[4], fields[5]),
+        fixType: FixTypes[parseIntSafe(fields[6])],
+        satellitesInView: parseIntSafe(fields[7]),
+        horizontalDilution: parseFloatSafe(fields[8]),
+        altitudeMeters: parseFloatSafe(fields[9]),
+        geoidalSeperation: parseFloatSafe(fields[11]),
+        differentialAge: parseFloatSafe(fields[13]),
+        differentialRefStn: fields[14]
+    };
+}
 
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
+
+export function encodePacket(packet: GGAPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeTime(packet.time));
+    result.push(encodeLatitude(packet.latitude));
+    result.push(encodeLongitude(packet.longitude));
+    result.push(encodeValue(FixTypes.indexOf(packet.fixType)));
+    result.push(encodeValue(packet.satellitesInView));
+    result.push(encodeFixed(packet.horizontalDilution, 1));
+    result.push(encodeAltitude(packet.altitudeMeters));
+    result.push(encodeGeoidalSeperation(packet.geoidalSeperation));
+    result.push(encodeFixed(packet.differentialAge, 2));
+    result.push(encodeValue(packet.differentialRefStn));
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
 }

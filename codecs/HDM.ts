@@ -13,24 +13,37 @@
  * 3. Checksum
  */
 
-var helpers = require("../helpers.js")
+
+import { createNmeaChecksumFooter, encodeFixed, parseFloatSafe } from "../helpers";
 
 
-exports.ID = 'HDM';
-exports.TYPE = 'heading-info-magnetic';
+export const sentenceId: "HDM" = "HDM";
+export const sentenceName = "Heading - magnetic";
 
-exports.decode = function (fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    heading: +fields[1]
-  }
+
+export interface HDMPacket {
+    sentenceId: "HDM";
+    sentenceName?: string;
+    talkerId?: string;
+    heading: number;
+}
+
+
+export function decodeSentence(fields: string[]): HDMPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        heading: parseFloatSafe(fields[1])
+    };
 };
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID];
-  result.push(helpers.encodeFixed(msg.heading, 1));
-  result.push('M');
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
-};
+
+export function encodePacket(packet: HDMPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeFixed(packet.heading, 1));
+    result.push("M");
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
+}

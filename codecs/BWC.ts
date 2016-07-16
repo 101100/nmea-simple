@@ -25,21 +25,40 @@
  * 14. Checksum
  */
 
-exports.ID = 'BWC';
-exports.TYPE = '2-waypoint';
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    time: fields[1],
-    lat: fields[2],
-    latPole: fields[3],
-    lon: fields[4],
-    lonPole: fields[5],
-    bearingTrue: +fields[6],
-    bearingMag: +fields[8],
-    distance: +fields[10],
-    id: fields[12]
-  }
+import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
+
+
+export const sentenceId: "BWC" = "BWC";
+export const sentenceName = "Bearing & Distance to Waypoint - Great Circle";
+
+
+export interface BWCPacket {
+    sentenceId: "BWC";
+    sentenceName?: string;
+    talkerId?: string;
+    time: Date;
+    bearingLatitude: number;
+    bearingLongitude: number;
+    bearingTrue: number;
+    bearingMagnetic: number;
+    distanceNm: number;
+    waypointId: string;
+    faaMode?: string;
+}
+
+
+export function decodeSentence(fields: string[]): BWCPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        time: parseTime(fields[1]),
+        bearingLatitude: parseLatitude(fields[2], fields[3]),
+        bearingLongitude: parseLongitude(fields[4], fields[5]),
+        bearingTrue: parseFloatSafe(fields[6]),
+        bearingMagnetic: parseFloatSafe(fields[8]),
+        distanceNm: parseFloatSafe(fields[10]),
+        waypointId: fields[12],
+        faaMode: fields[13]
+    };
 }

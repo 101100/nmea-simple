@@ -17,30 +17,44 @@
  * 7. Checksum
  */
 
-var helpers = require("../helpers.js")
+import { createNmeaChecksumFooter, encodeFixed, parseFloatSafe } from "../helpers";
 
 
-exports.ID = 'DBT';
-exports.TYPE = 'depth-transducer';
+export const sentenceId: "DBT" = "DBT";
+export const sentenceName = "Depth below transducer";
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    depthFeet: +fields[1],
-    depthMeters: +fields[3],
-    depthFathoms: +fields[5]
-  }
+
+export interface DBTPacket {
+    sentenceId: "DBT";
+    sentenceName?: string;
+    talkerId?: string;
+    depthFeet: number;
+    depthMeters: number;
+    depthFathoms: number;
 }
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID];
-  result.push(helpers.encodeFixed(msg.depthFeet,2));
-  result.push('f');
-  result.push(helpers.encodeFixed(msg.depthMeters, 2));
-  result.push('M');
-  result.push(helpers.encodeFixed(msg.depthFathoms, 2));
-  result.push('F');
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
+
+export function decodeSentence(fields: string[]): DBTPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        depthFeet: parseFloatSafe(fields[1]),
+        depthMeters: parseFloatSafe(fields[3]),
+        depthFathoms: parseFloatSafe(fields[5])
+    };
+}
+
+
+export function encodePacket(packet: DBTPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeFixed(packet.depthFeet, 2));
+    result.push("f");
+    result.push(encodeFixed(packet.depthMeters, 2));
+    result.push("M");
+    result.push(encodeFixed(packet.depthFathoms, 2));
+    result.push("F");
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
 }

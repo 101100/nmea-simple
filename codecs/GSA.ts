@@ -25,22 +25,47 @@
  * 18. Checksum
  */
 
-exports.ID = 'GSA';
-exports.TYPE = 'active-satellites';
+import { parseFloatSafe, parseIntSafe } from "../helpers";
 
-exports.decode = function(fields) {
-  var sats = [];
-  for (var i=3; i < 15; i++) {
-    if (fields[i]) sats.push(+fields[i]);
-  };
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    selectionMode: fields[1],
-    mode: +fields[2],
-    satellites: sats,
-    PDOP: +fields[15],
-    HDOP: +fields[16],
-    VDOP: +fields[17]
-  };
+
+export const sentenceId: "GSA" = "GSA";
+export const sentenceName = "Active satellites and dilution of precision";
+
+
+export type ThreeDFixType = "unknown" | "none" | "2D" | "3D";
+const ThreeDFixTypes: ThreeDFixType[] = [ "unknown", "none", "2D", "3D" ];
+
+
+export interface GSAPacket {
+    sentenceId: "GSA";
+    sentenceName?: string;
+    talkerId?: string;
+    selectionMode: "automatic" | "manual";
+    fixMode: ThreeDFixType;
+    satellites: number[];
+    PDOP: number;
+    HDOP: number;
+    VDOP: number;
+}
+
+
+export function decodeSentence(fields: string[]): GSAPacket {
+    let sats: number[] = [];
+
+    for (let i = 3; i < 15; i++) {
+        if (fields[i]) {
+            sats.push(+fields[i]);
+        }
+    }
+
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        selectionMode: fields[1] === "A" ? "automatic" : "manual",
+        fixMode: ThreeDFixTypes[parseIntSafe(fields[2])],
+        satellites: sats,
+        PDOP: parseFloatSafe(fields[15]),
+        HDOP: parseFloatSafe(fields[16]),
+        VDOP: parseFloatSafe(fields[17])
+    };
 }

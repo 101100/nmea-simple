@@ -2,8 +2,8 @@
  * === MTK - Configuration packet ===
  *
  * ------------------------------------------------------------------------------
- *        1   2 ... n n+1
- *        |   |     | |
+ *       1   2 ... n n+1
+ *       |   |     | |
  * $--MTKxxx,a,...,a*hh<CR><LF>
  * ------------------------------------------------------------------------------
  *
@@ -13,24 +13,38 @@
  * n+1. Checksum
  */
 
-var helpers = require("../helpers.js")
+
+import { createNmeaChecksumFooter, padLeft, parseIntSafe } from "../helpers";
 
 
-exports.ID = 'MTK';
-exports.TYPE = 'configuration';
+export const sentenceId: "MTK" = "MTK";
+export const sentenceName = "Configuration packet";
 
-exports.decode = function (fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    packetType: +fields[0].substr(3),
-    data: fields.slice(1)
-  }
+
+export interface MTKPacket {
+    sentenceId: "MTK";
+    sentenceName?: string;
+    talkerId?: string;
+    packetType: number;
+    data: string[];
+}
+
+
+export function decodeSentence(fields: string[]): MTKPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        packetType: parseIntSafe(fields[0].substr(3)),
+        data: fields.slice(1)
+    };
 };
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID + helpers.padLeft(msg.packetType, 3, '0')];
-  result = result.concat(msg.data);
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
-};
+
+export function encodePacket(packet: MTKPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId + padLeft(packet.packetType, 3, "0")];
+
+    result = result.concat(packet.data);
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
+}

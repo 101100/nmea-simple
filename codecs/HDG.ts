@@ -16,17 +16,33 @@
  * 6. Checksum
  */
 
-exports.ID = 'HDG';
-exports.TYPE = 'heading';
+import { parseFloatSafe } from "../helpers";
 
-exports.decode = function(fields) {
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    heading: +fields[1],
-    deviation: +fields[2],
-    deviationDirection: fields[3],
-    variation: +fields[4],
-    variationDirection: fields[5],
-  }
+
+export const sentenceId: "HDG" = "HDG";
+export const sentenceName = "Heading - deviation and variation";
+
+
+export interface HDGPacket {
+    sentenceId: "HDG";
+    sentenceName?: string;
+    talkerId?: string;
+    heading: number;
+    deviation: number;
+    deviationDirection: "" | "E" | "W";
+    variation: number;
+    variationDirection: "" | "E" | "W";
+}
+
+
+export function decodeSentence(fields: string[]): HDGPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        heading: parseFloatSafe(fields[1]),
+        deviation: parseFloatSafe(fields[2]),
+        deviationDirection: fields[3] === "E" ? "E" : fields[3] === "W" ? "W" : "",
+        variation: parseFloatSafe(fields[4]),
+        variationDirection: fields[5] === "E" ? "E" : fields[5] === "W" ? "W" : ""
+    };
 }

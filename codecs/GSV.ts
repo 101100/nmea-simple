@@ -37,30 +37,53 @@
  * 21. Checksum
  */
 
-exports.ID = 'GSV';
-exports.TYPE = 'satellite-list-partial';
+import { parseIntSafe } from "../helpers";
 
-exports.decode = function(fields) {
-  var numRecords = (fields.length - 4) / 4,
-      sats = [];
 
-  for (var i = 0; i < numRecords; i++) {
-    var offset = i * 4 + 4;
+export const sentenceId: "GSV" = "GSV";
+export const sentenceName = "Satellites in view";
 
-    sats.push({
-        id: +fields[offset],
-        elevationDeg: +fields[offset + 1],
-        azimuthTrue: +fields[offset + 2],
-        SNRdB: +fields[offset + 3]
-    });
-  };
 
-  return {
-    sentence: exports.ID,
-    type: exports.TYPE,
-    numMsgs: +fields[1],
-    msgNum: +fields[2],
-    satsInView: +fields[3],
-    satellites: sats
-  };
+export interface Satellite {
+    prnNumber: number;
+    elevationDegrees: number;
+    azimuthTrue: number;
+    SNRdB: number;
+}
+
+
+export interface GSVPacket {
+    sentenceId: "GSV";
+    sentenceName?: string;
+    talkerId?: string;
+    numberOfMessages: number;
+    messageNumber: number;
+    satellitesInView: number;
+    satellites: Satellite[];
+}
+
+
+export function decodeSentence(fields: string[]): GSVPacket {
+    const numRecords = (fields.length - 4) / 4;
+    let sats: Satellite[] = [];
+
+    for (let i = 0; i < numRecords; i++) {
+        const offset = i * 4 + 4;
+
+        sats.push({
+            prnNumber: parseIntSafe(fields[offset]),
+            elevationDegrees: parseIntSafe(fields[offset + 1]),
+            azimuthTrue: parseIntSafe(fields[offset + 2]),
+            SNRdB: parseIntSafe(fields[offset + 3])
+        });
+    };
+
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        numberOfMessages: parseIntSafe(fields[1]),
+        messageNumber: parseIntSafe(fields[2]),
+        satellitesInView: parseIntSafe(fields[3]),
+        satellites: sats
+    };
 }

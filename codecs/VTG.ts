@@ -1,10 +1,10 @@
 /*
- * === VTG - Track made good and Ground speed ===
+ * === VTG - Track made good and ground speed ===
  *
  * ------------------------------------------------------------------------------
- *        1   2 3   4 5   6 7   8 9  10
- *        |   | |   | |   | |   | |  |
- * $--VTG,x.x,T,x.x,M,x.x,N,x.x,K,m,*hh<CR><LF>
+ *        1     2 3     4 5   6 7   8 9  10
+ *        |     | |     | |   | |   | |  |
+ * $--VTG,xxx.x,T,xxx.x,M,x.x,N,x.x,K,m,*hh<CR><LF>
  * ------------------------------------------------------------------------------
  *
  * Field Number:
@@ -21,39 +21,58 @@
  * 10. Checksum
  */
 
-var helpers = require("../helpers.js")
+import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
 
 
-exports.ID = 'VTG';
-exports.TYPE = 'track-info';
+export const sentenceId: "VTG" = "VTG";
+export const sentenceName = "Track made good and ground speed";
 
-exports.decode = function (fields) {
-  return {
-    sentence: exports.ID,
-    type: 'track-info',
-    trackTrue: +fields[1],
-    trackMagnetic: +fields[3],
-    speedKnots: +fields[5],
-    speedKmph: +fields[7]
-  }
+
+export interface VTGPacket {
+    sentenceId: "VTG";
+    sentenceName?: string;
+    talkerId?: string;
+    trackTrue: number;
+    trackMagnetic: number;
+    speedKnots: number;
+    speedKmph?: number;
+    faaMode?: string;
+}
+
+
+export function decodeSentence(fields: string[]): VTGPacket {
+    return {
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        trackTrue: parseFloatSafe(fields[1]),
+        trackMagnetic: parseFloatSafe(fields[3]),
+        speedKnots: parseFloatSafe(fields[5]),
+        speedKmph: parseFloatSafe(fields[7]),
+        faaMode: fields[9]
+    };
 };
 
-exports.encode = function (talker, msg) {
-  var result = ['$' + talker + exports.ID];
-  result.push(helpers.encodeDegrees(msg.trackTrue));
-  result.push('T');
-  result.push(helpers.encodeDegrees(msg.trackMagnetic));
-  result.push('M');
-  result.push(helpers.encodeFixed(msg.speedKnots, 2));
-  result.push('N');
-  if (msg.speedKmph) {
-    result.push(helpers.encodeFixed(msg.speedKmph, 2));
-    result.push('K');
-  } else {
-    result.push('');
-    result.push('');
-  }
-  result.push('A');
-  var resultMsg = result.join(',');
-  return resultMsg + helpers.computeChecksum(resultMsg);
+
+export function encodePacket(packet: VTGPacket, talker: string): string {
+    let result = ["$" + talker + sentenceId];
+
+    result.push(encodeDegrees(packet.trackTrue));
+    result.push("T");
+    result.push(encodeDegrees(packet.trackMagnetic));
+    result.push("M");
+    result.push(encodeFixed(packet.speedKnots, 2));
+    result.push("N");
+    if (packet.speedKmph) {
+        result.push(encodeFixed(packet.speedKmph, 2));
+        result.push("K");
+    } else {
+        result.push("");
+        result.push("");
+    }
+    if (packet.faaMode) {
+        result.push(packet.faaMode);
+    }
+
+    const resultWithoutChecksum = result.join(",");
+    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
 }

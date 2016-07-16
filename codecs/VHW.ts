@@ -19,16 +19,31 @@
  * 9. Checksum
  */
 
-exports.ID = 'VHW';
-exports.TYPE = 'water-heading-speed';
+import { parseFloatSafe } from "../helpers";
 
-exports.decode = function(fields) {
+
+export const sentenceId: "VHW" = "VHW";
+export const sentenceName = "Water speed and heading";
+
+
+export interface VHWPacket {
+    sentenceId: "VHW";
+    sentenceName?: string;
+    talkerId?: string;
+    degreesTrue: number;
+    degreesMagnetic: number;
+    speedKnots: number;
+    speedKmph: number;
+}
+
+
+export function decodeSentence(fields: string[]): VHWPacket {
     return {
-        sentence: exports.ID,
-        type: exports.TYPE,
-        degreesTrue: +fields[1],
-        degreesMagnetic: +fields[3],
-        speedKnots: +fields[5],
-        speedKmph: +fields[7]
-    }
+        sentenceId: sentenceId,
+        sentenceName: sentenceName,
+        degreesTrue: parseFloatSafe(fields[1]),
+        degreesMagnetic: parseFloatSafe(fields[3]),
+        speedKnots: parseFloatSafe(fields[5]),
+        speedKmph: parseFloatSafe(fields[7])
+    };
 }
