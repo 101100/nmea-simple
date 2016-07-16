@@ -1,19 +1,27 @@
-var should = require('should');
+import "should";
 
-describe('MTK', function () {
-  it('parses', function () {
-    var msg = require("../nmea.js").parse("$PMTK314,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0*28");
-    msg.should.have.property('sentence', 'MTK');
-    msg.should.have.property('type', 'configuration');
-    msg.should.have.property('packetType', 314);
-    msg.should.have.property('data', [ '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0' ]);
+import { encodeNmeaPacket, parseNmeaSentence } from "../index";
+
+
+describe("MTK", (): void => {
+
+  it("parser", (): void => {
+    const packet = parseNmeaSentence("$PMTK314,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0*28");
+
+    packet.should.have.property("sentenceId", "MTK");
+    packet.should.have.property("sentenceName", "Configuration packet");
+    packet.should.have.property("packetType", 314);
+    packet.should.have.property("data", [ "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ]);
   });
 
-  it('encoding ok', function () {
-    var nmeaMsg = require("../nmea.js").encode('P', {
-      type: 'configuration',
+  it("encoder", (): void => {
+    const sentence = encodeNmeaPacket({
+      sentenceId: "MTK",
       packetType: 300,
-      data: [ 1000, 0, 0, 0, 0 ]});
-    nmeaMsg.should.equal("$PMTK300,1000,0,0,0,0*1C");
+      data: [ "1000", "0", "0", "0", "0" ]
+    }, "P");
+
+    sentence.should.equal("$PMTK300,1000,0,0,0,0*1C");
   });
+
 });

@@ -1,18 +1,25 @@
-var should = require('should');
+import "should";
 
-describe('HDM', function () {
-  it('parses', function () {
-    var msg = require("../nmea.js").parse("$IIHDM,201.5,M*24");
-    msg.should.have.property('sentence', 'HDM');
-    msg.should.have.property('type', 'heading-info-magnetic');
-    msg.should.have.property('heading', 201.5);
+import { encodeNmeaPacket, parseNmeaSentence } from "../index";
+
+
+describe("HDM", (): void => {
+
+  it("parser", (): void => {
+    const packet = parseNmeaSentence("$IIHDM,201.5,M*24");
+
+    packet.should.have.property("sentenceId", "HDM");
+    packet.should.have.property("sentenceName", "Heading - magnetic");
+    packet.should.have.property("heading", 201.5);
   });
 
-  it('encodes', function () {
-    var nmeaMsg = require("../nmea.js").encode('II', {
-      type: 'heading-info-magnetic',
+  it("encoder", (): void => {
+    const sentence = encodeNmeaPacket({
+      sentenceId: "HDM",
       heading: 201.5
-    });
-    nmeaMsg.should.equal("$IIHDM,201.5,M*24");
+    }, "II");
+
+    sentence.should.equal("$IIHDM,201.5,M*24");
   });
+
 });

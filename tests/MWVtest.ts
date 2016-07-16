@@ -1,25 +1,33 @@
-var should = require('should');
+import "should";
 
-describe('MWV', function () {
-  it('parses', function () {
-    var msg = require("../nmea.js").parse("$IIMWV,017,R,02.91,N,A*2F");
-    msg.should.have.property('sentence', 'MWV');
-    msg.should.have.property('type', 'wind');
-    msg.should.have.property('angle', 17);
-    msg.should.have.property('reference', 'R');
-    msg.should.have.property('speed', 2.91);
-    msg.should.have.property('units', 'N');
-    msg.should.have.property('status', 'A');
+import { encodeNmeaPacket, parseNmeaSentence } from "../index";
+
+
+describe("MWV", (): void => {
+
+  it("parser", (): void => {
+    const packet = parseNmeaSentence("$IIMWV,017,R,02.91,N,A*2F");
+
+    packet.should.have.property("sentenceId", "MWV");
+    packet.should.have.property("sentenceName", "Wind speed and angle");
+    packet.should.have.property("windAngle", 17);
+    packet.should.have.property("reference", "relative");
+    packet.should.have.property("speed", 2.91);
+    packet.should.have.property("units", "N");
+    packet.should.have.property("status", "valid");
   });
 
-  it('encoding ok', function () {
-    var nmeaMsg = require("../nmea.js").encode('XX', {
-      type: 'wind',
-      angle: 17,
-      reference: 'R',
+  it("encoder", (): void => {
+    const sentence = encodeNmeaPacket({
+      sentenceId: "MWV",
+      windAngle: 17,
+      reference: "relative",
       speed: 2.91,
-      units: 'N',
-      status: 'A'});
-    nmeaMsg.should.equal("$XXMWV,017.00,R,2.91,N,A*31");
+      units: "N",
+      status: "valid"
+    }, "XX");
+
+    sentence.should.equal("$XXMWV,017.00,R,2.91,N,A*31");
   });
+
 });

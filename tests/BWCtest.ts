@@ -1,18 +1,22 @@
-var should = require('should');
+import "should";
 
-describe('BWC', function () {
-  it('parses', function () {
-    var msg = require("../nmea.js").parse("$GPBWC,220516,5130.02,N,00046.34,W,213.8,T,218.0,M,0004.6,N,EGLM*21");
-    msg.should.have.property('sentence', 'BWC');
-    msg.should.have.property('type', '2-waypoint');
-    msg.should.have.property('time', '220516');
-    msg.should.have.property('lat', '5130.02');
-    msg.should.have.property('latPole', 'N');
-    msg.should.have.property('lon', '00046.34');
-    msg.should.have.property('lonPole', 'W');
-    msg.should.have.property('bearingTrue', 213.8);
-    msg.should.have.property('bearingMag', 218);
-    msg.should.have.property('distance', 4.6);
-    msg.should.have.property('id', 'EGLM');
+import { parseNmeaSentence } from "../index";
+
+
+describe("BWC", (): void => {
+
+  it("parser", (): void => {
+    const packet = parseNmeaSentence("$GPBWC,220516,5130.02,N,00046.34,W,213.8,T,218.0,M,0004.6,N,EGLM*21");
+
+    packet.should.have.property("sentenceId", "BWC");
+    packet.should.have.property("sentenceName", "Bearing & Distance to Waypoint - Great Circle");
+    packet.should.have.property("time", new Date(Date.UTC(0, 0, 0, 22, 5, 16)));
+    packet.should.have.property("bearingLatitude", 51.50033333333333);
+    packet.should.have.property("bearingLongitude", -0.7723333333333334);
+    packet.should.have.property("bearingTrue", 213.8);
+    packet.should.have.property("bearingMagnetic", 218);
+    packet.should.have.property("distanceNm", 4.6);
+    packet.should.have.property("waypointId", "EGLM");
   });
+
 });

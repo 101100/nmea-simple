@@ -1,12 +1,18 @@
-var should = require('should');
+import "should";
 
-describe('RDID', function () {
-  it('parses', function () {
-    var msg = require("../nmea.js").parse("$PRDID,-1.31,7.81,47.31*68");
-    msg.should.have.property('sentence', 'RDID');
-    msg.should.have.property('type', 'gyro');
-    msg.should.have.property('roll', -1.31);
-    msg.should.have.property('pitch', 7.81);
-    msg.should.have.property('heading', 47.31);
+import { parseNmeaSentence } from "../index";
+
+
+describe("RDID", (): void => {
+
+  it("parser", (): void => {
+    const packet = parseNmeaSentence("$PRDID,-1.31,7.81,47.31*68");
+
+    packet.should.have.property("sentenceId", "RDID");
+    packet.should.have.property("sentenceName", "RDI proprietary heading, pitch, and roll");
+    packet.should.have.property("roll", -1.31);
+    packet.should.have.property("pitch", 7.81);
+    packet.should.have.property("heading", 47.31);
   });
+
 });
