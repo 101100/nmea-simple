@@ -14,7 +14,7 @@
  */
 
 
-import { createNmeaChecksumFooter, padLeft, parseIntSafe } from "../helpers";
+import { createNmeaChecksumFooter, padLeft, parseIntSafe, parseNumberOrString } from "../helpers";
 
 
 export const sentenceId: "MTK" = "MTK";
@@ -26,7 +26,7 @@ export interface MTKPacket {
     sentenceName?: string;
     talkerId?: string;
     packetType: number;
-    data: string[];
+    data: (string | number)[];
 }
 
 
@@ -35,7 +35,7 @@ export function decodeSentence(fields: string[]): MTKPacket {
         sentenceId: sentenceId,
         sentenceName: sentenceName,
         packetType: parseIntSafe(fields[0].substr(3)),
-        data: fields.slice(1)
+        data: fields.slice(1).map<string|number>(parseNumberOrString)
     };
 };
 
@@ -43,7 +43,7 @@ export function decodeSentence(fields: string[]): MTKPacket {
 export function encodePacket(packet: MTKPacket, talker: string): string {
     let result = ["$" + talker + sentenceId + padLeft(packet.packetType, 3, "0")];
 
-    result = result.concat(packet.data);
+    result = result.concat(packet.data.toString());
 
     const resultWithoutChecksum = result.join(",");
     return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);

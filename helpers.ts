@@ -286,6 +286,18 @@ export function parseFloatSafe(f: string): number {
 };
 
 
+// fields can be empty so have to wrap the global parseFloat
+export function parseNumberOrString(str?: string): number|string {
+    if (str === undefined) {
+        return "";
+    }
+
+    const num = parseFloat(str);
+
+    return num === NaN ? str : num;
+};
+
+
 // decode latitude
 // input : latitude in nmea format
 //      first two digits are degress
