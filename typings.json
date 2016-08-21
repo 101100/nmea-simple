@@ -1,0 +1,6 @@
+{
+  "globalDependencies": {
+    "mocha": "registry:env/mocha#2.2.5+20160321223601",
+    "should": "registry:dt/should#8.1.1+20160608082854"
+  }
+}
