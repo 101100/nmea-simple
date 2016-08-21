@@ -9,7 +9,7 @@ describe("GGA", (): void => {
     const packet = parseNmeaSentence("$IIGGA,123519,4807.04,N,1131.00,E,1,8,0.9,545.9,M,46.9,M,,*52");
 
     packet.should.have.property("sentenceId", "GGA");
-    packet.should.have.property("sentenceName", "Global Positioning System Fix Data");
+    packet.should.have.property("sentenceName", "Global positioning system fix data");
     packet.should.have.property("talkerId", "II");
     packet.should.have.property("time", new Date(Date.UTC(0, 0, 0, 12, 35, 19)));
     packet.should.have.property("latitude", 48.117333333333335);

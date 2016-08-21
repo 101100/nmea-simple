@@ -37,7 +37,7 @@ import { parseFloatSafe } from "../helpers";
 
 
 export const sentenceId: "APB" = "APB";
-export const sentenceName = "Autopilot Sentence \"B\"";
+export const sentenceName = "Autopilot sentence \"B\"";
 
 
 export interface APBPacket {

@@ -1,5 +1,5 @@
 /*
- * === RMC - Recommended Minimum Navigation Information ===
+ * === RMC - Recommended minimum navigation information ===
  *
  * ------------------------------------------------------------------------------
  *                                                              12

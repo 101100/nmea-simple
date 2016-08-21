@@ -29,20 +29,6 @@ export function padLeft(value: string|number, length: number, paddingCharacter: 
 // =========================================
 
 /**
- * Verify the checksum for an NMEA sentence without the trailing "*xx".
- */
-export function verifyNmeaChecksum(sentenceWithoutChecksum: string, checksum: string): boolean {
-    const correctChecksum = computeNmeaChecksum(sentenceWithoutChecksum);
-
-    // checksum is a 2 digit hex value
-    const parsedChecksum = parseInt(checksum, 16);
-
-    // should be equal
-    return correctChecksum === parsedChecksum;
-}
-
-
-/**
  * Checks that the given NMEA sentence has a valid checksum.
  */
 export function validNmeaChecksum(nmeaSentence: string): boolean {
@@ -188,18 +174,6 @@ export function encodeGeoidalSeperation(geoidalSep: number): string {
 };
 
 
-// magnetic letiation
-export function encodeMaglet(v: number): string {
-    if (v === undefined) {
-        return ",";
-    }
-    const a = Math.abs(v);
-    const s = (v < 0) ? (a.toFixed(1) + ",E") : (a.toFixed(1) + ",W");
-
-    return padLeft(s, 7, "0");
-};
-
-
 // degrees
 export function encodeDegrees(degrees?: number): string {
     if (degrees === undefined) {
@@ -236,15 +210,6 @@ export function encodeTime(date?: Date): string {
 };
 
 
-export function encodeKnots(knots?: number): string {
-    if (knots === undefined) {
-        return "";
-    }
-
-    return padLeft(knots.toFixed(1), 5, "0");
-};
-
-
 export function encodeValue(value?: any): string {
     if (value === undefined) {
         return "";
@@ -259,34 +224,33 @@ export function encodeValue(value?: any): string {
 // field traditionalDecoders
 // =========================================
 
-// separate number and units
-export function parseAltitude(alt: string, units: string): number {
-    let scale = 1.0;
-    if (units === "F") {
-        scale = 0.3048;
-    }
-    return parseFloat(alt) * scale;
-};
-
-
-// separate degrees value and quadrant (E/W)
-export function parseDegrees(deg: string, quadrant: string): number {
-    let q = (quadrant === "E") ? -1.0 : 1.0;
-
-    return parseFloat(deg) * q;
-};
-
-
-// fields can be empty so have to wrap the global parseFloat
-export function parseFloatSafe(f: string): number {
-    if (f === "") {
+/**
+ * Parse the given string to a float, returning 0 for an empty string.
+ */
+export function parseFloatSafe(str: string): number {
+    if (str === "") {
         return 0.0;
     }
-    return parseFloat(f);
+    return parseFloat(str);
 };
 
 
-// fields can be empty so have to wrap the global parseFloat
+/**
+ * Parse the given string to a integer, returning 0 for an empty string.
+ */
+export function parseIntSafe(i: string): number {
+    if (i === "") {
+        return 0;
+    }
+
+    return parseInt(i, 10);
+};
+
+
+/**
+ * Parse the given string to a float if possible, returning 0 for an undefined
+ * value and a string the the given string cannot be parsed.
+ */
 export function parseNumberOrString(str?: string): number|string {
     if (str === undefined) {
         return "";
@@ -298,11 +262,11 @@ export function parseNumberOrString(str?: string): number|string {
 };
 
 
-// decode latitude
-// input : latitude in nmea format
-//      first two digits are degress
-//      rest of digits are decimal minutes
-// output : latitude in decimal degrees
+/**
+ * Parses latitude given as "ddmm.mm", "dmm.mm" or "mm.mm" (assuming zero
+ * degrees) along with a given hemisphere of "N" or "S" into decimal degrees,
+ * where north is positive and south is negetive.
+ */
 export function parseLatitude(lat: string, hemi: string): number {
     const hemisphere = (hemi === "N") ? 1.0 : -1.0;
 
@@ -324,14 +288,15 @@ export function parseLatitude(lat: string, hemi: string): number {
         minutes = lat;
     }
 
-    // latitude is usually precise to 5-8 digits
     return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * hemisphere;
 };
 
 
-// decode longitude
-// first three digits are degress
-// rest of digits are decimal minutes
+/**
+ * Parses latitude given as "dddmm.mm", "ddmm.mm", "dmm.mm" or "mm.mm" (assuming
+ * zero degrees) along with a given hemisphere of "N" or "S" into decimal
+ * degrees, where north is positive and south is negetive.
+ */
 export function parseLongitude(lon: string, hemi: string): number {
     const h = (hemi === "E") ? 1.0 : -1.0;
 
@@ -357,23 +322,13 @@ export function parseLongitude(lon: string, hemi: string): number {
         minutes = lon;
     }
 
-    // longitude is usually precise to 5-8 digits
     return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * h;
 };
 
 
-// fields can be empty so have to wrap the global parseInt
-export function parseIntSafe(i: string): number {
-    if (i === "") {
-        return 0;
-    }
-
-    return parseInt(i, 10);
-};
-
-
 /**
- * Parses a time in the format "hhmmss" or "hhmmss.ss".
+ * Parses a time in the format "hhmmss" or "hhmmss.ss" and returns a Date
+ * object.
  */
 export function parseTime(time: string): Date {
     const hours = parseInt(time.slice(0, 2), 10);
@@ -390,7 +345,7 @@ export function parseTime(time: string): Date {
 
 /**
  * Parses a date in the format "yyMMdd" along with a time in the format
- * "hhmmss" or "hhmmss.ss".
+ * "hhmmss" or "hhmmss.ss" and returns a Date object.
  */
 export function parseDatetime(date: string, time: string): Date {
     const day = parseInt(date.slice(0, 2), 10);

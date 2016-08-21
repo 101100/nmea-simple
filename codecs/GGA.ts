@@ -1,5 +1,5 @@
 /*
- * === GGA - Global Positioning System Fix Data ===
+ * === GGA - Global positioning system fix data ===
  *
  * ------------------------------------------------------------------------------
  *                                                      11
@@ -41,7 +41,7 @@ import { createNmeaChecksumFooter, encodeAltitude, encodeFixed, encodeGeoidalSep
 
 
 export const sentenceId: "GGA" = "GGA";
-export const sentenceName = "Global Positioning System Fix Data";
+export const sentenceName = "Global positioning system fix data";
 
 
 export type FixType = "none" | "fix" | "delta" | "pps" | "rtk" | "frtk" | "estimated" | "manual" | "simulation";

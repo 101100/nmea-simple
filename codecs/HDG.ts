@@ -1,5 +1,5 @@
 /*
- * === HDG - Heading - Deviation and Variation ===
+ * === HDG - Heading - deviation and variation ===
  *
  * ------------------------------------------------------------------------------
  *        1   2   3 4   5 6

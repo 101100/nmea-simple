@@ -1,5 +1,5 @@
 /*
- * === GLL - Geographic Position - Latitude/Longitude ===
+ * === GLL - Geographic position - latitude and longitude ===
  *
  * ------------------------------------------------------------------------------
  *         1       2 3        4 5         6 7  8
@@ -25,7 +25,7 @@ import { createNmeaChecksumFooter, encodeLatitude, encodeLongitude, encodeTime, 
 
 
 export const sentenceId: "GLL" = "GLL";
-export const sentenceName = "Geographic position - latitude/longitude";
+export const sentenceName = "Geographic position - latitude and longitude";
 
 
 export interface GLLPacket {

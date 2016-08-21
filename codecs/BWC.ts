@@ -1,5 +1,5 @@
 /*
- * === BWC - Bearing & Distance to Waypoint - Great Circle ===
+ * === BWC - Bearing and distance to waypoint - great circle ===
  *
  * ------------------------------------------------------------------------------
  *                                                         12
@@ -30,7 +30,7 @@ import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from "../hel
 
 
 export const sentenceId: "BWC" = "BWC";
-export const sentenceName = "Bearing & Distance to Waypoint - Great Circle";
+export const sentenceName = "Bearing and distance to waypoint - great circle";
 
 
 export interface BWCPacket {

@@ -1,5 +1,5 @@
 /*
- * === PRDID - RDI Proprietary Heading, Pitch, and Roll ===
+ * === PRDID - RDI proprietary heading, pitch, and roll ===
  *
  * ------------------------------------------------------------------------------
  *        1   2   3   4

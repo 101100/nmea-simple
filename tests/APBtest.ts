@@ -9,7 +9,7 @@ describe("APB", (): void => {
     const packet = parseNmeaSentence("$GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C");
 
     packet.should.have.property("sentenceId", "APB");
-    packet.should.have.property("sentenceName", "Autopilot Sentence \"B\"");
+    packet.should.have.property("sentenceName", "Autopilot sentence \"B\"");
     packet.should.have.property("status1", "A");
     packet.should.have.property("status2", "A");
     packet.should.have.property("xteMagn", 0.1);
