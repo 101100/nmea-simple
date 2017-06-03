@@ -9,6 +9,7 @@ describe("GSV", (): void => {
     const packet = parseNmeaSentence("$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74 $GPGSV,3,2,11,14,25,170,00,16,57,208,39,18,67,296,40,19,40,246,00*2D");
     packet.should.have.property("sentenceId", "GSV");
     packet.should.have.property("sentenceName", "Satellites in view");
+    packet.should.have.property("talkerId", "GP");
     packet.should.have.property("numberOfMessages", 3);
     packet.should.have.property("messageNumber", 1);
     packet.should.have.property("satellitesInView", 11);
@@ -48,6 +49,7 @@ describe("GSV", (): void => {
 
     packet.should.have.property("sentenceId", "GSV");
     packet.should.have.property("sentenceName", "Satellites in view");
+    packet.should.have.property("talkerId", "GP");
     packet.should.have.property("numberOfMessages", 3);
     packet.should.have.property("messageNumber", 3);
     packet.should.have.property("satellitesInView", 11);

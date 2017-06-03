@@ -10,6 +10,7 @@ describe("DBT", (): void => {
 
     packet.should.have.property("sentenceId", "DBT");
     packet.should.have.property("sentenceName", "Depth below transducer");
+    packet.should.have.property("talkerId", "II");
     packet.should.have.property("depthFeet", 36.41);
     packet.should.have.property("depthMeters", 11.10);
     packet.should.have.property("depthFathoms", 5.99);

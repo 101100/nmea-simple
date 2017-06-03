@@ -10,6 +10,7 @@ describe("APB", (): void => {
 
     packet.should.have.property("sentenceId", "APB");
     packet.should.have.property("sentenceName", "Autopilot sentence \"B\"");
+    packet.should.have.property("talkerId", "GP");
     packet.should.have.property("status1", "A");
     packet.should.have.property("status2", "A");
     packet.should.have.property("xteMagn", 0.1);

@@ -10,6 +10,7 @@ describe("VTG", (): void => {
 
     packet.should.have.property("sentenceId", "VTG");
     packet.should.have.property("sentenceName", "Track made good and ground speed");
+    packet.should.have.property("talkerId", "II");
     packet.should.have.property("trackTrue", 210.43);
     packet.should.have.property("trackMagnetic", 210.43);
     packet.should.have.property("speedKnots", 5.65);
