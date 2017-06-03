@@ -9,7 +9,7 @@
  * ------------------------------------------------------------------------------
  *
  * Field Number:
- * 1. UTCTime
+ * 1. UTC time
  * 2. Waypoint Latitude
  * 3. N = North, S = South
  * 4. Waypoint Longitude
