@@ -69,6 +69,7 @@ The following sentence types can be parsed by this library:
 - `GGA`
 - `GLL`
 - `GSA`
+- `GST`
 - `GSV`
 - `HDG`
 - `HDM`
