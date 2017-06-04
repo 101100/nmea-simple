@@ -10,6 +10,7 @@ describe("HDG", (): void => {
 
     packet.should.have.property("sentenceId", "HDG");
     packet.should.have.property("sentenceName", "Heading - deviation and variation");
+    packet.should.have.property("talkerId", "HC");
     packet.should.have.property("heading", 98.3);
     packet.should.have.property("deviation", 0);
     packet.should.have.property("deviationDirection", "E");

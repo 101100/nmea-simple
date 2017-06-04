@@ -10,6 +10,7 @@ describe("MTK", (): void => {
 
     packet.should.have.property("sentenceId", "MTK");
     packet.should.have.property("sentenceName", "Configuration packet");
+    packet.should.have.property("talkerId", "P");
     packet.should.have.property("packetType", 314);
     packet.should.have.property("data", [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]);
   });

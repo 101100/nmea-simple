@@ -10,6 +10,7 @@ describe("GLL", (): void => {
 
     packet.should.have.property("sentenceId", "GLL");
     packet.should.have.property("sentenceName", "Geographic position - latitude and longitude");
+    packet.should.have.property("talkerId", "GP");
     packet.should.have.property("latitude", 60.084466666666664);
     packet.should.have.property("longitude", 23.539016666666665);
     packet.should.have.property("time", new Date(Date.UTC(0, 0, 0, 9, 56, 1)));

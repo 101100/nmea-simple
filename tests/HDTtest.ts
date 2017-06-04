@@ -10,6 +10,7 @@ describe("HDT", (): void => {
 
     packet.should.have.property("sentenceId", "HDT");
     packet.should.have.property("sentenceName", "Heading - true");
+    packet.should.have.property("talkerId", "II");
     packet.should.have.property("heading", 234.2);
   });
 

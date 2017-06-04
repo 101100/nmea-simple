@@ -10,6 +10,7 @@ describe("BWC", (): void => {
 
     packet.should.have.property("sentenceId", "BWC");
     packet.should.have.property("sentenceName", "Bearing and distance to waypoint - great circle");
+    packet.should.have.property("talkerId", "GP");
     packet.should.have.property("time", new Date(Date.UTC(0, 0, 0, 22, 5, 16)));
     packet.should.have.property("bearingLatitude", 51.50033333333333);
     packet.should.have.property("bearingLongitude", -0.7723333333333334);

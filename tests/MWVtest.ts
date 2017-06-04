@@ -10,6 +10,7 @@ describe("MWV", (): void => {
 
     packet.should.have.property("sentenceId", "MWV");
     packet.should.have.property("sentenceName", "Wind speed and angle");
+    packet.should.have.property("talkerId", "II");
     packet.should.have.property("windAngle", 17);
     packet.should.have.property("reference", "relative");
     packet.should.have.property("speed", 2.91);
