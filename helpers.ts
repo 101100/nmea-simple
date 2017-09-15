@@ -368,5 +368,5 @@ export function parseDatetime(date: string, time: string): Date {
         milliseconds = parseInt(time.slice(7, 9), 10) * 10;
     }
 
-    return new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds));
+    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds, milliseconds));
 };
