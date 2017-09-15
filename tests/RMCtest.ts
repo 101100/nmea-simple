@@ -11,7 +11,7 @@ describe("RMC", (): void => {
     packet.should.have.property("sentenceId", "RMC");
     packet.should.have.property("sentenceName", "Recommended minimum navigation information");
     packet.should.have.property("talkerId", "GP");
-    packet.should.have.property("datetime", new Date(Date.UTC(1994, 3, 23, 12, 35, 19)));
+    packet.should.have.property("datetime", new Date("1994-03-23T12:35:19Z"));
     packet.should.have.property("status", "valid");
     packet.should.have.property("latitude", 48.1173);
     packet.should.have.property("longitude", 11.516666666666667);
