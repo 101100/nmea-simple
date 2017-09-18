@@ -13,7 +13,7 @@ describe("GLL", (): void => {
     packet.should.have.property("talkerId", "GP");
     packet.should.have.property("latitude", 60.084466666666664);
     packet.should.have.property("longitude", 23.539016666666665);
-    packet.should.have.property("time", new Date(Date.UTC(0, 0, 0, 9, 56, 1)));
+    packet.should.have.property("time", new Date("1899-12-31T09:56:01Z")); // 1899-12-31 is the date when year month and day are zero
     packet.should.have.property("status", "valid");
     packet.should.have.property("faaMode", "D");
   });
@@ -23,7 +23,7 @@ describe("GLL", (): void => {
       sentenceId: "GLL",
       latitude: 60.084333,
       longitude: 23.539,
-      time: new Date(Date.UTC(2013, 4, 1, 21, 17, 22)),
+      time: new Date("2013-04-01T21:17:22Z"),
       status: "valid",
       faaMode: "D"
     }, "II");
