@@ -294,8 +294,8 @@ export function parseLatitude(lat: string, hemi: string): number {
 
 /**
  * Parses latitude given as "dddmm.mm", "ddmm.mm", "dmm.mm" or "mm.mm" (assuming
- * zero degrees) along with a given hemisphere of "N" or "S" into decimal
- * degrees, where north is positive and south is negetive.
+ * zero degrees) along with a given hemisphere of "E" or "W" into decimal
+ * degrees, where east is positive and west is negetive.
  */
 export function parseLongitude(lon: string, hemi: string): number {
     const h = (hemi === "E") ? 1.0 : -1.0;
