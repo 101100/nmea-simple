@@ -1,6 +1,7 @@
 import { decodeSentence as decodeAPB, APBPacket } from "./codecs/APB";
 import { decodeSentence as decodeBWC, BWCPacket } from "./codecs/BWC";
 import { decodeSentence as decodeDBT, DBTPacket, encodePacket as encodeDBT } from "./codecs/DBT";
+import { decodeSentence as decodeDTM, DTMPacket } from "./codecs/DTM";
 import { decodeSentence as decodeGGA, GGAPacket, encodePacket as encodeGGA } from "./codecs/GGA";
 import { decodeSentence as decodeGLL, GLLPacket, encodePacket as encodeGLL } from "./codecs/GLL";
 import { decodeSentence as decodeGSA, GSAPacket } from "./codecs/GSA";
@@ -19,8 +20,8 @@ import { decodeSentence as decodeVTG, VTGPacket, encodePacket as encodeVTG } fro
 import { validNmeaChecksum } from "./helpers";
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | GGAPacket | GLLPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
-export { APBPacket, BWCPacket, DBTPacket, GGAPacket, GLLPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
+export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket | GLLPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
+export { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
 
 
 type Decoder = (parts: string[]) => Packet;
@@ -30,6 +31,7 @@ const decoders: { [sentenceId: string]: Decoder } = {
     APB: decodeAPB,
     BWC: decodeBWC,
     DBT: decodeDBT,
+    DTM: decodeDTM,
     GGA: decodeGGA,
     GLL: decodeGLL,
     GSA: decodeGSA,
