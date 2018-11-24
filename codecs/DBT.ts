@@ -46,7 +46,7 @@ export function decodeSentence(fields: string[]): DBTPacket {
 
 
 export function encodePacket(packet: DBTPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeFixed(packet.depthFeet, 2));
     result.push("f");

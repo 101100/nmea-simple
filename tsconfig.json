@@ -9,7 +9,7 @@
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
-    "strictNullChecks": true
+    "strict": true
   },
   "exclude": [
     "dist",

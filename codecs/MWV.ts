@@ -50,7 +50,7 @@ export function decodeSentence(fields: string[]): MWVPacket {
 
 
 export function encodePacket(packet: MWVPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeDegrees(packet.windAngle));
     result.push(packet.reference === "relative" ? "R" : "T");

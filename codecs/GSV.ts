@@ -65,7 +65,7 @@ export interface GSVPacket {
 
 export function decodeSentence(fields: string[]): GSVPacket {
     const numRecords = (fields.length - 4) / 4;
-    let sats: Satellite[] = [];
+    const sats: Satellite[] = [];
 
     for (let i = 0; i < numRecords; i++) {
         const offset = i * 4 + 4;
@@ -76,7 +76,7 @@ export function decodeSentence(fields: string[]): GSVPacket {
             azimuthTrue: parseIntSafe(fields[offset + 2]),
             SNRdB: parseIntSafe(fields[offset + 3])
         });
-    };
+    }
 
     return {
         sentenceId: sentenceId,

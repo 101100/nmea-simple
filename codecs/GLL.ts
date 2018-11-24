@@ -54,7 +54,7 @@ export function decodeSentence(fields: string[]): GLLPacket {
 
 
 export function encodePacket(packet: GLLPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeLatitude(packet.latitude));
     result.push(encodeLongitude(packet.longitude));

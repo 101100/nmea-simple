@@ -35,11 +35,11 @@ export function decodeSentence(fields: string[]): HDTPacket {
         sentenceName: sentenceName,
         heading: parseFloatSafe(fields[1])
     };
-};
+}
 
 
 export function encodePacket(packet: HDTPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeFixed(packet.heading, 1));
     result.push("T");

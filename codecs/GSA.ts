@@ -50,7 +50,7 @@ export interface GSAPacket {
 
 
 export function decodeSentence(fields: string[]): GSAPacket {
-    let sats: number[] = [];
+    const sats: number[] = [];
 
     for (let i = 3; i < 15; i++) {
         if (fields[i]) {

@@ -37,7 +37,7 @@ export function decodeSentence(fields: string[]): MTKPacket {
         packetType: parseIntSafe(fields[0].substr(3)),
         data: fields.slice(1).map<string|number>(parseNumberOrString)
     };
-};
+}
 
 
 export function encodePacket(packet: MTKPacket, talker: string): string {

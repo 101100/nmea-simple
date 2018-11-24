@@ -1,7 +1,7 @@
 // Copied from from https://github.com/nherment/node-nmea/blob/master/lib/Helper.js
 
 
-let m_hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+const m_hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
 
 
 export function toHexString(v: number): string {
@@ -40,7 +40,7 @@ export function validNmeaChecksum(nmeaSentence: string): boolean {
     const actualChecksum = parseInt(checksumString, 16);
 
     return correctChecksum === actualChecksum;
-};
+}
 
 
 /**
@@ -81,7 +81,7 @@ export function encodeFixed(value: number | undefined, decimalPlaces: number): s
     }
 
     return value.toFixed(decimalPlaces);
-};
+}
 
 
 /**
@@ -116,7 +116,7 @@ export function encodeLatitude(latitude?: number): string {
 
     s = s + t + "," + hemisphere;
     return s;
-};
+}
 
 
 /**
@@ -151,7 +151,7 @@ export function encodeLongitude(longitude?: number): string {
 
     s = s + t + "," + hemisphere;
     return s;
-};
+}
 
 
 // 1 decimal, always meters
@@ -161,7 +161,7 @@ export function encodeAltitude(alt: number): string {
     }
 
     return alt.toFixed(1) + ",M";
-};
+}
 
 
 // 1 decimal, always meters
@@ -171,7 +171,7 @@ export function encodeGeoidalSeperation(geoidalSep: number): string {
     }
 
     return geoidalSep.toFixed(1) + ",M";
-};
+}
 
 
 // degrees
@@ -181,7 +181,7 @@ export function encodeDegrees(degrees?: number): string {
     }
 
     return padLeft(degrees.toFixed(2), 6, "0");
-};
+}
 
 
 export function encodeDate(date?: Date): string {
@@ -194,7 +194,7 @@ export function encodeDate(date?: Date): string {
     const day = date.getUTCDate();
 
     return padLeft(day, 2, "0") + padLeft(month, 2, "0") + year.toFixed(0).substr(2);
-};
+}
 
 
 export function encodeTime(date?: Date): string {
@@ -207,7 +207,7 @@ export function encodeTime(date?: Date): string {
     const seconds = date.getUTCSeconds();
 
     return padLeft(hours, 2, "0") + padLeft(minutes, 2, "0") + padLeft(seconds, 2, "0");
-};
+}
 
 
 export function encodeValue(value?: any): string {
@@ -216,7 +216,7 @@ export function encodeValue(value?: any): string {
     }
 
     return value.toString();
-};
+}
 
 
 
@@ -232,7 +232,7 @@ export function parseFloatSafe(str: string): number {
         return 0.0;
     }
     return parseFloat(str);
-};
+}
 
 
 /**
@@ -244,7 +244,7 @@ export function parseIntSafe(i: string): number {
     }
 
     return parseInt(i, 10);
-};
+}
 
 
 /**
@@ -259,7 +259,7 @@ export function parseNumberOrString(str?: string): number|string {
     const num = parseFloat(str);
 
     return num === NaN ? str : num;
-};
+}
 
 
 /**
@@ -289,7 +289,7 @@ export function parseLatitude(lat: string, hemi: string): number {
     }
 
     return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * hemisphere;
-};
+}
 
 
 /**
@@ -323,7 +323,7 @@ export function parseLongitude(lon: string, hemi: string): number {
     }
 
     return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * h;
-};
+}
 
 
 /**
@@ -369,4 +369,4 @@ export function parseDatetime(date: string, time: string): Date {
     }
 
     return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds, milliseconds));
-};
+}

@@ -55,4 +55,4 @@ export function decodeSentence(fields: string[]): GSTPacket {
         longitudeError: parseFloatSafe(fields[7]),
         altitudeError: parseFloatSafe(fields[8])
     };
-};
+}
