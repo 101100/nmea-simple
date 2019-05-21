@@ -84,7 +84,7 @@ export function decodeSentence(fields: string[]): GGAPacket {
 
 
 export function encodePacket(packet: GGAPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeTime(packet.time));
     result.push(encodeLatitude(packet.latitude));

@@ -1,26 +1,27 @@
 import { decodeSentence as decodeAPB, APBPacket } from "./codecs/APB";
 import { decodeSentence as decodeBWC, BWCPacket } from "./codecs/BWC";
-import { decodeSentence as decodeDBT, DBTPacket, encodePacket as encodeDBT } from "./codecs/DBT";
-import { decodeSentence as decodeGGA, GGAPacket, encodePacket as encodeGGA } from "./codecs/GGA";
-import { decodeSentence as decodeGLL, GLLPacket, encodePacket as encodeGLL } from "./codecs/GLL";
+import { decodeSentence as decodeDBT, encodePacket as encodeDBT, DBTPacket } from "./codecs/DBT";
+import { decodeSentence as decodeDTM, DTMPacket } from "./codecs/DTM";
+import { decodeSentence as decodeGGA, encodePacket as encodeGGA, GGAPacket } from "./codecs/GGA";
+import { decodeSentence as decodeGLL, encodePacket as encodeGLL, GLLPacket } from "./codecs/GLL";
 import { decodeSentence as decodeGSA, GSAPacket } from "./codecs/GSA";
 import { decodeSentence as decodeGST, GSTPacket } from "./codecs/GST";
 import { decodeSentence as decodeGSV, GSVPacket } from "./codecs/GSV";
 import { decodeSentence as decodeHDG, HDGPacket } from "./codecs/HDG";
-import { decodeSentence as decodeHDM, HDMPacket, encodePacket as encodeHDM } from "./codecs/HDM";
-import { decodeSentence as decodeHDT, HDTPacket, encodePacket as encodeHDT } from "./codecs/HDT";
-import { decodeSentence as decodeMTK, MTKPacket, encodePacket as encodeMTK } from "./codecs/MTK";
-import { decodeSentence as decodeMWV, MWVPacket, encodePacket as encodeMWV } from "./codecs/MWV";
+import { decodeSentence as decodeHDM, encodePacket as encodeHDM, HDMPacket } from "./codecs/HDM";
+import { decodeSentence as decodeHDT, encodePacket as encodeHDT, HDTPacket } from "./codecs/HDT";
+import { decodeSentence as decodeMTK, encodePacket as encodeMTK, MTKPacket } from "./codecs/MTK";
+import { decodeSentence as decodeMWV, encodePacket as encodeMWV, MWVPacket } from "./codecs/MWV";
 import { decodeSentence as decodeRDID, RDIDPacket } from "./codecs/RDID";
 import { decodeSentence as decodeRMC, RMCPacket } from "./codecs/RMC";
 import { decodeSentence as decodeVHW, VHWPacket } from "./codecs/VHW";
-import { decodeSentence as decodeVTG, VTGPacket, encodePacket as encodeVTG } from "./codecs/VTG";
+import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } from "./codecs/VTG";
 
 import { validNmeaChecksum } from "./helpers";
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | GGAPacket | GLLPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
-export { APBPacket, BWCPacket, DBTPacket, GGAPacket, GLLPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
+export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket | GLLPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
+export { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
 
 
 type Decoder = (parts: string[]) => Packet;
@@ -30,6 +31,7 @@ const decoders: { [sentenceId: string]: Decoder } = {
     APB: decodeAPB,
     BWC: decodeBWC,
     DBT: decodeDBT,
+    DTM: decodeDTM,
     GGA: decodeGGA,
     GLL: decodeGLL,
     GSA: decodeGSA,
@@ -51,14 +53,14 @@ type Encoder = (packet: Packet, talker: string) => string;
 
 
 const encoders: { [sentenceId: string]: Encoder } = {
-    DBT: encodeDBT,
-    GGA: encodeGGA,
-    GLL: encodeGLL,
-    HDM: encodeHDM,
-    HDT: encodeHDT,
-    MTK: encodeMTK,
-    MWV: encodeMWV,
-    VTG: encodeVTG
+    DBT: encodeDBT as Encoder,
+    GGA: encodeGGA as Encoder,
+    GLL: encodeGLL as Encoder,
+    HDM: encodeHDM as Encoder,
+    HDT: encodeHDT as Encoder,
+    MTK: encodeMTK as Encoder,
+    MWV: encodeMWV as Encoder,
+    VTG: encodeVTG as Encoder
 };
 
 
@@ -89,10 +91,10 @@ export function parseNmeaSentence(sentence: string): Packet {
         throw Error(`No known parser for sentence ID "${sentenceId}".`);
     }
 
-    let packet = parser(fields);
+    const packet = parser(fields);
     packet.talkerId = talkerId;
     return packet;
-};
+}
 
 
 export function encodeNmeaPacket(packet: Packet, talker: string = "P"): string {

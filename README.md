@@ -66,6 +66,7 @@ The following sentence types can be parsed by this library:
 - `APB`
 - `BWC`
 - `DBT`
+- `DTM`
 - `GGA`
 - `GLL`
 - `GSA`

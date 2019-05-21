@@ -50,11 +50,11 @@ export function decodeSentence(fields: string[]): VTGPacket {
         speedKmph: parseFloatSafe(fields[7]),
         faaMode: fields[9]
     };
-};
+}
 
 
 export function encodePacket(packet: VTGPacket, talker: string): string {
-    let result = ["$" + talker + sentenceId];
+    const result = ["$" + talker + sentenceId];
 
     result.push(encodeDegrees(packet.trackTrue));
     result.push("T");
