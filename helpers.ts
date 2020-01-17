@@ -343,25 +343,9 @@ export function parseLongitude(lon: string, hemi: string): number {
     return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * h;
 }
 
-
 /**
  * Parses a time in the format "hhmmss" or "hhmmss.ss" and returns a Date
  * object.
- */
-export function parseTimeOld(time: string): Date {
-    const hours = parseInt(time.slice(0, 2), 10);
-    const minutes = parseInt(time.slice(2, 4), 10);
-    const seconds = parseInt(time.slice(4, 6), 10);
-    let milliseconds = 0;
-    if (time.length === 9) {
-        milliseconds = parseInt(time.slice(7, 9), 10) * 10;
-    }
-
-    return new Date(Date.UTC(0, 0, 0, hours, minutes, seconds, milliseconds));
-}
-
-/**
- *
  * @param {String} time
  * @param {String=} date
  * @returns {Date}
