@@ -13,17 +13,30 @@ describe("GLL", (): void => {
     packet.should.have.property("talkerId", "GP");
     packet.should.have.property("latitude", 60.084466666666664);
     packet.should.have.property("longitude", 23.539016666666665);
-    packet.should.have.property("time", new Date("1899-12-31T09:56:01Z")); // 1899-12-31 is the date when year month and day are zero
+
+    const timestamp = new Date();
+    timestamp.setUTCHours(9);
+    timestamp.setUTCMinutes(56);
+    timestamp.setUTCSeconds(1);
+    timestamp.setUTCMilliseconds(0);
+
+    packet.should.have.property("time", timestamp);
     packet.should.have.property("status", "valid");
     packet.should.have.property("faaMode", "D");
   });
 
   it("encoder", (): void => {
+    const timestamp = new Date();
+    timestamp.setUTCHours(21);
+    timestamp.setUTCMinutes(17);
+    timestamp.setUTCSeconds(22);
+    timestamp.setUTCMilliseconds(0);
+
     const sentence = encodeNmeaPacket({
       sentenceId: "GLL",
       latitude: 60.084333,
       longitude: 23.539,
-      time: new Date("2013-04-01T21:17:22Z"),
+      time: timestamp,
       status: "valid",
       faaMode: "D"
     }, "II");
