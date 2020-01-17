@@ -163,6 +163,15 @@ export function encodeAltitude(alt: number): string {
     return alt.toFixed(1) + ",M";
 }
 
+// Some encodings don't want the unit
+export function encodeAltitudeNoUnits(alt: number): string {
+    if (alt === undefined) {
+        return ",";
+    }
+
+    return alt.toFixed(1);
+}
+
 
 // 1 decimal, always meters
 export function encodeGeoidalSeperation(geoidalSep: number): string {
@@ -171,6 +180,15 @@ export function encodeGeoidalSeperation(geoidalSep: number): string {
     }
 
     return geoidalSep.toFixed(1) + ",M";
+}
+
+// Some encodings don't want the unit
+export function encodeGeoidalSeperationNoUnits(geoidalSep: number): string {
+    if (geoidalSep === undefined) {
+        return ",";
+    }
+
+    return geoidalSep.toFixed(1);
 }
 
 
@@ -330,7 +348,7 @@ export function parseLongitude(lon: string, hemi: string): number {
  * Parses a time in the format "hhmmss" or "hhmmss.ss" and returns a Date
  * object.
  */
-export function parseTime(time: string): Date {
+export function parseTimeOld(time: string): Date {
     const hours = parseInt(time.slice(0, 2), 10);
     const minutes = parseInt(time.slice(2, 4), 10);
     const seconds = parseInt(time.slice(4, 6), 10);
@@ -340,6 +358,52 @@ export function parseTime(time: string): Date {
     }
 
     return new Date(Date.UTC(0, 0, 0, hours, minutes, seconds, milliseconds));
+}
+
+/**
+ *
+ * @param {String} time
+ * @param {String=} date
+ * @returns {Date}
+ */
+export function parseTime(time: string, date?: string): Date {
+
+    if (time === "") {
+        return new Date(0);
+    }
+
+    const ret = new Date();
+
+    if (date) {
+
+        const year = date.slice(4);
+        const month = parseInt(date.slice(2, 4), 10) - 1;
+        const day = date.slice(0, 2);
+
+        if (year.length === 4) {
+            ret.setUTCFullYear(Number(year), Number(month), Number(day));
+        } else {
+            // If we need to parse older GPRMC data, we should hack something like
+            // year < 73 ? 2000+year : 1900+year
+            // Since GPS appeared in 1973
+            ret.setUTCFullYear(Number("20" + year), Number(month), Number(day));
+        }
+    }
+
+    ret.setUTCHours(Number(time.slice(0, 2)));
+    ret.setUTCMinutes(Number(time.slice(2, 4)));
+    ret.setUTCSeconds(Number(time.slice(4, 6)));
+
+    // Extract the milliseconds, since they can be not present, be 3 decimal place, or 2 decimal places, or other?
+    const msStr = time.slice(7);
+    const msExp = msStr.length;
+    let ms = 0;
+    if (msExp !== 0) {
+        ms = parseFloat(msStr) * Math.pow(10, 3 - msExp);
+    }
+    ret.setUTCMilliseconds(Number(ms));
+
+    return ret;
 }
 
 

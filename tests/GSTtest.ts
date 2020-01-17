@@ -11,7 +11,14 @@ describe("GST", (): void => {
     packet.should.have.property("sentenceId", "GST");
     packet.should.have.property("sentenceName", "GPS pseudorange noise statistics");
     packet.should.have.property("talkerId", "GP");
-    packet.should.have.property("time", new Date("1899-12-31T17:28:14Z")); // 1899-12-31 is the date when year month and day are zero
+
+    const timestamp = new Date();
+    timestamp.setUTCHours(17);
+    timestamp.setUTCMinutes(28);
+    timestamp.setUTCSeconds(14);
+    timestamp.setUTCMilliseconds(0);
+
+    packet.should.have.property("time", timestamp);
     packet.should.have.property("totalRms", 0.006);
     packet.should.have.property("semiMajorError", 0.023);
     packet.should.have.property("semiMinorError", 0.020);

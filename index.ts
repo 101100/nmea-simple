@@ -4,6 +4,7 @@ import { decodeSentence as decodeDBT, encodePacket as encodeDBT, DBTPacket } fro
 import { decodeSentence as decodeDTM, DTMPacket } from "./codecs/DTM";
 import { decodeSentence as decodeGGA, encodePacket as encodeGGA, GGAPacket } from "./codecs/GGA";
 import { decodeSentence as decodeGLL, encodePacket as encodeGLL, GLLPacket } from "./codecs/GLL";
+import { decodeSentence as decodeGNS, encodePacket as encodeGNS, GNSPacket } from "./codecs/GNS";
 import { decodeSentence as decodeGSA, GSAPacket } from "./codecs/GSA";
 import { decodeSentence as decodeGST, GSTPacket } from "./codecs/GST";
 import { decodeSentence as decodeGSV, GSVPacket } from "./codecs/GSV";
@@ -20,8 +21,8 @@ import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } fro
 import { validNmeaChecksum } from "./helpers";
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket | GLLPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
-export { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
+export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket;
+export { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket };
 
 
 type Decoder = (parts: string[]) => Packet;
@@ -34,6 +35,7 @@ const decoders: { [sentenceId: string]: Decoder } = {
     DTM: decodeDTM,
     GGA: decodeGGA,
     GLL: decodeGLL,
+    GNS: decodeGNS,
     GSA: decodeGSA,
     GST: decodeGST,
     GSV: decodeGSV,
@@ -56,6 +58,7 @@ const encoders: { [sentenceId: string]: Encoder } = {
     DBT: encodeDBT as Encoder,
     GGA: encodeGGA as Encoder,
     GLL: encodeGLL as Encoder,
+    GNS: encodeGNS as Encoder,
     HDM: encodeHDM as Encoder,
     HDT: encodeHDT as Encoder,
     MTK: encodeMTK as Encoder,

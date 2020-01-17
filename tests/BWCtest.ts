@@ -11,7 +11,14 @@ describe("BWC", (): void => {
     packet.should.have.property("sentenceId", "BWC");
     packet.should.have.property("sentenceName", "Bearing and distance to waypoint - great circle");
     packet.should.have.property("talkerId", "GP");
-    packet.should.have.property("time", new Date("1899-12-31T22:05:16Z")); // 1899-12-31 is the date when year month and day are zero
+
+    const timestamp = new Date();
+    timestamp.setUTCHours(22);
+    timestamp.setUTCMinutes(5);
+    timestamp.setUTCSeconds(16);
+    timestamp.setUTCMilliseconds(0);
+
+    packet.should.have.property("time", timestamp);
     packet.should.have.property("bearingLatitude", 51.50033333333333);
     packet.should.have.property("bearingLongitude", -0.7723333333333334);
     packet.should.have.property("bearingTrue", 213.8);

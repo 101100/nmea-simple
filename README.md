@@ -69,6 +69,7 @@ The following sentence types can be parsed by this library:
 - `DTM`
 - `GGA`
 - `GLL`
+- `GNS`
 - `GSA`
 - `GST`
 - `GSV`
@@ -87,6 +88,7 @@ The following sentence types can be encoded by this library:
 - `DBT`
 - `GGA`
 - `GLL`
+- `GNS`
 - `HDM`
 - `HDT`
 - `MTK`
@@ -100,6 +102,6 @@ all dependencies removed and TypeScript typing information added.
 ## Acknowledgements
 
 This module was based on the NPM [nmea](https://www.npmjs.com/package/nmea) and
-[nmea-0183](https://www.npmjs.com/package/nmea-0183) packages and the
+[nmea-0183](https://www.npmjs.com/package/nmea-0183) packages (with date decoding borrowed from [GPS](https://www.npmjs.com/package/gps)) and the
 documentation was expanded based on the excellent
 [analysis and descriptions](http://catb.org/gpsd/NMEA.html) by Eric S. Raymond.
