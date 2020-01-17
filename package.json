@@ -32,11 +32,11 @@
     "test": "npm run build && mocha -R tap dist/tests"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 8.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
-    "mocha": "^5.2.0",
+    "mocha": "^7.0.0",
     "should": "^13.2.3",
     "tslint": "^5.11.0",
     "typescript": "^3.1.6"
