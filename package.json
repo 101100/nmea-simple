@@ -32,7 +32,7 @@
     "test": "npm run build && mocha -R tap dist/tests"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.8.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
