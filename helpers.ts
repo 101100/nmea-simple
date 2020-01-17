@@ -166,7 +166,7 @@ export function encodeAltitude(alt: number): string {
 // Some encodings don't want the unit
 export function encodeAltitudeNoUnits(alt: number): string {
     if (alt === undefined) {
-        return ",";
+        return "";
     }
 
     return alt.toFixed(1);
@@ -185,7 +185,7 @@ export function encodeGeoidalSeperation(geoidalSep: number): string {
 // Some encodings don't want the unit
 export function encodeGeoidalSeperationNoUnits(geoidalSep: number): string {
     if (geoidalSep === undefined) {
-        return ",";
+        return "";
     }
 
     return geoidalSep.toFixed(1);
