@@ -1,6 +1,6 @@
 {
   "name": "nmea-simple",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "homepage": "https://github.com/101100/nmea-simple",
   "description": "NMEA 0183 sentence parser and encoder",
   "author": {
