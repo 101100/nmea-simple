@@ -41,7 +41,7 @@ describe("GLL", (): void => {
       faaMode: "D"
     }, "II");
 
-    sentence.should.equal("$IIGLL,6005.06,N,02332.34,E,211722,A,D*52");
+    sentence.should.equal("$IIGLL,6005.059980,N,02332.340000,E,211722,A,D*59");
   });
 
 });

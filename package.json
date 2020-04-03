@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "npm run lint && tsc",
-    "lint": "tslint *.ts codecs/*.ts tests/*.ts",
+    "lint": "tslint *.ts codecs/*.ts examples/*.ts tests/*.ts",
     "prepublish": "npm run test",
     "test": "npm run build && mocha -R tap dist/tests"
   },
@@ -35,11 +35,14 @@
     "node": ">= 8.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
-    "mocha": "^7.0.0",
+    "@serialport/parser-readline": "^8.0.6",
+    "@types/mocha": "^7.0.2",
+    "@types/serialport": "^8.0.0",
+    "mocha": "^7.1.1",
+    "serialport": "^8.0.7",
     "should": "^13.2.3",
-    "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
   },
   "dependencies": {}
 }

@@ -85,7 +85,7 @@ export function encodeFixed(value: number | undefined, decimalPlaces: number): s
 
 
 /**
- * Encodes the latitude in the standard NMEA format "ddmm.mm".
+ * Encodes the latitude in the standard NMEA format "ddmm.mmmmmm".
  *
  * @param latitude Latitude in decimal degrees.
  */
@@ -111,8 +111,8 @@ export function encodeLatitude(latitude?: number): string {
     const f = latitude - d;
     // convert to fractional minutes
     const m = (f * 60.0);
-    // format the fixed point fractional minutes "mm.mm"
-    const t = padLeft(m.toFixed(2), 5, "0");
+    // format the fixed point fractional minutes "mm.mmmmmm"
+    const t = padLeft(m.toFixed(6), 9, "0");
 
     s = s + t + "," + hemisphere;
     return s;
@@ -120,7 +120,7 @@ export function encodeLatitude(latitude?: number): string {
 
 
 /**
- * Encodes the longitude in the standard NMEA format "dddmm.mm".
+ * Encodes the longitude in the standard NMEA format "dddmm.mmmmmm".
  *
  * @param longitude Longitude in decimal degrees.
  */
@@ -146,8 +146,8 @@ export function encodeLongitude(longitude?: number): string {
     const f = longitude - d;
     // convert to fractional minutes and round up to the specified precision
     const m = (f * 60.0);
-    // format the fixed point fractional minutes "mm.mm"
-    const t = padLeft(m.toFixed(2), 5, "0");
+    // format the fixed point fractional minutes "mm.mmmmmm"
+    const t = padLeft(m.toFixed(6), 9, "0");
 
     s = s + t + "," + hemisphere;
     return s;

@@ -47,7 +47,7 @@ describe("GGA", (): void => {
       geoidalSeperation: 46.9
     }, "II");
 
-    sentence.should.equal("$IIGGA,123519,4807.04,N,01131.00,E,1,8,0.9,545.9,M,46.9,M,,*62");
+    sentence.should.equal("$IIGGA,123519,4807.039980,N,01131.000020,E,1,8,0.9,545.9,M,46.9,M,,*6F");
   });
 
 });
