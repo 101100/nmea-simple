@@ -14,24 +14,27 @@ described in clear terms [here](http://catb.org/gpsd/NMEA.html).
 
 Typically, you will get NMEA sentences via the serial port from a GPS module.
 You can use the [serialport](https://www.npmjs.com/package/serialport) NPM
-package to read the lines (separated by `"\r\n"`).  Each line can then be
-passed into `parseNmeaSentence` to get the decoded packet.
+package to read the lines (and the `@serialport/parser-readline` parser to
+separate the input by `"\r\n"`).  Each line can then be passed into
+`parseNmeaSentence` to get the decoded packet.
 
 ```js
-var SerialPort = require("serialport");
-var nmea = require("nmea-simple");
+const SerialPort = require("serialport");
+const Readline = require("@serialport/parser-readline")
+const nmea = require("..");
 
-var port = new SerialPort(
-    "/dev/ttyO2",
+const port = new SerialPort(
+    "/dev/ttyUSB0",
     {
-        baudrate: 9600,
-        parser: SerialPort.parsers.readline("\r\n")
+        baudRate: 9600
     }
 );
 
-port.on("data", function(line) {
+const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+
+parser.on("data", line => {
     try {
-        var packet = nmea.parseNmeaSentence(line);
+        const packet = nmea.parseNmeaSentence(line);
 
         if (packet.sentenceId === "RMC" && packet.status === "valid") {
             console.log("Got location via RMC packet:", packet.latitude, packet.longitude);
