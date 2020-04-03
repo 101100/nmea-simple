@@ -34,7 +34,7 @@ describe("GNS", (): void => {
       geoidalSeperation: -37
     }, "GN");
 
-    sentence.should.equal("$GNGNS,144127,4306.93,N,08930.87,W,AN,7,1.2,320.2,-37.0,,*76");
+    sentence.should.equal("$GNGNS,144127,4306.925564,N,08930.865195,W,AN,7,1.2,320.2,-37.0,,*7C");
   });
 
 });
