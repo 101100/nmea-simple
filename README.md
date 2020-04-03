@@ -21,7 +21,7 @@ separate the input by `"\r\n"`).  Each line can then be passed into
 ```js
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline")
-const nmea = require("..");
+const nmea = require("nmea-simple");
 
 const port = new SerialPort(
     "/dev/ttyUSB0",
