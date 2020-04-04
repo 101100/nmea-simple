@@ -85,6 +85,7 @@ The following sentence types can be parsed by this library:
 - `RMC`
 - `VHW`
 - `VTG`
+- `ZDA`
 
 The following sentence types can be encoded by this library:
 

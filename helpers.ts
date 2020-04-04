@@ -12,7 +12,7 @@ export function toHexString(v: number): string {
 }
 
 
-export function padLeft(value: string|number, length: number, paddingCharacter: string): string {
+export function padLeft(value: string | number, length: number, paddingCharacter: string): string {
     let result = typeof value === "string" ? value : value.toFixed(0);
 
     while (result.length < length) {
@@ -269,7 +269,7 @@ export function parseIntSafe(i: string): number {
  * Parse the given string to a float if possible, returning 0 for an undefined
  * value and a string the the given string cannot be parsed.
  */
-export function parseNumberOrString(str?: string): number|string {
+export function parseNumberOrString(str?: string): number | string {
     if (str === undefined) {
         return "";
     }
@@ -344,10 +344,10 @@ export function parseLongitude(lon: string, hemi: string): number {
 }
 
 /**
- * Parses a time in the format "hhmmss" or "hhmmss.ss" and returns a Date
+ * Parses a UTC time and optionally a date and returns a Date
  * object.
- * @param {String} time
- * @param {String=} date
+ * @param {String} time Time the format "hhmmss" or "hhmmss.ss"
+ * @param {String=} date Optional date in format the ddmmyyyy or ddmmyy
  * @returns {Date}
  */
 export function parseTime(time: string, date?: string): Date {
