@@ -4,14 +4,11 @@ import { parseNmeaSentence } from "../index";
 
 describe("ZDA", (): void => {
     it("parser", (): void => {
-        const packet = parseNmeaSentence(
-            "$GNZDA,050956.00,30,03,2020,00,00*77"
-        );
-
+        const packet = parseNmeaSentence("$GPZDA,160012.71,11,03,2004,-1,00*7D");
         packet.should.have.property("sentenceId", "ZDA");
-        packet.should.have.property("sentenceName", "Data and Time");
-        packet.should.have.property("datetime", new Date("2020-03-30T05:09:56.000Z"));
-        packet.should.have.property("localHoursOffset", 0);
-        packet.should.have.property("localMinutesOffset", 0);
+        packet.should.have.property("sentenceName", "UTC, day, month, year, and local time zone");
+        packet.should.have.property("datetime", new Date("2004-03-11T16:00:12.710Z"));
+        packet.should.have.property("localZoneHours", -1);
+        packet.should.have.property("localZoneMinutes", 0);
     });
 });
