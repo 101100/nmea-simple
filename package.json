@@ -32,7 +32,7 @@
     "test": "npm run build && TS_NODE_PROJECT='./tsconfig.tests.json' mocha --require ts-node/register -R tap tests/*.ts"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 14"
   },
   "devDependencies": {
     "@serialport/parser-readline": "^10.3.0",
