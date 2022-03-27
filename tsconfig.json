@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es5",
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
+    "module": "es6",
+    "target": "es6",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
