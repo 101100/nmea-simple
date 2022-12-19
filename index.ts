@@ -70,24 +70,56 @@ const encoders: { [sentenceId: string]: Encoder } = {
 };
 
 
+export interface PacketFactory<PacketType> {
+    assemble: (stub: PacketStub, fields: string[]) => PacketType | null;
+}
+
+
+export class DefaultPacketFactory<CustomPacketType = null> implements PacketFactory<Packet | CustomPacketType> {
+
+    static getParser(stub: PacketStub): Decoder {
+
+        // Override for $PMTK314 and similar sentences
+        if (stub.sentenceId.substr(0, 3) === "MTK") {
+            return decodeMTK;
+        }
+
+        return decoders[stub.sentenceId];
+    }
+
+    assemble(stub: PacketStub, fields: string[]): Packet | CustomPacketType | null {
+        const parser = DefaultPacketFactory.getParser(stub);
+
+        if (parser) {
+            return parser(stub, fields);
+        }
+        else {
+            return this.assembleCustomPacket(stub, fields);
+        }
+    }
+
+    assembleCustomPacket(stub: PacketStub, fields: string[]): CustomPacketType | null {
+        return null;
+    }
+}
+
+
 export function parseNmeaSentence(sentence: string): Packet {
+    const factory = new DefaultPacketFactory();
+
     if (!validNmeaChecksum(sentence)) {
         throw Error(`Invalid sentence: "${sentence}".`);
     }
 
     const fields = sentence.split("*")[0].split(",");
     const stub = parseStub(fields[0]);
+    const packet = factory.assemble(stub, fields);
 
-    let parser = decoders[stub.sentenceId];
-    if (!parser && stub.sentenceId.substr(0, 3) === "MTK") {
-        parser = decodeMTK;
-    }
-
-    if (!parser) {
+    if (!packet) {
         throw Error(`No known parser for sentence ID "${stub.sentenceId}".`);
     }
 
-    return parser(stub, fields);
+    return packet;
 }
 
 
