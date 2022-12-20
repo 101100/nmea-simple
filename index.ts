@@ -20,6 +20,7 @@ import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } fro
 import { decodeSentence as decodeZDA, ZDAPacket } from "./codecs/ZDA";
 
 import { parseStub, PacketStub } from "./codecs/PacketStub";
+import { decodeSentence as decodeUnknown, UnknownPacket } from "./codecs/UnknownPacket";
 import { validNmeaChecksum } from "./helpers";
 
 
@@ -139,4 +140,26 @@ export function encodeNmeaPacket(packet: Packet, talker: string = "P"): string {
     } else {
         throw Error(`No known encoder for sentence ID "${packet.sentenceId}"`);
     }
+}
+
+// Unsafe parsing
+
+export type UnsafePacket = Packet | UnknownPacket;
+
+export class UnsafePacketFactory extends DefaultPacketFactory<UnknownPacket> {
+    assembleCustomPacket(stub: PacketStub<string>, fields: string[]): UnknownPacket | null {
+        return decodeUnknown(stub, fields);
+    }
+}
+
+const UNSAFE_PACKET_FACTORY = new UnsafePacketFactory();
+
+
+export function parseUnsafeNmeaSentence(sentence: string): UnsafePacket {
+    return parseGenericPacket(sentence, UNSAFE_PACKET_FACTORY);
+}
+
+
+export function getUnsafePacketId(packet: UnsafePacket) : string {
+    return (packet.sentenceId === "?") ? packet.originalPacketId : packet.sentenceId;
 }

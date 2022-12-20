@@ -152,6 +152,23 @@ Make sure not to conflict with built in sentence types!
 
 For more info see **CustomPacketsTest.ts**
 
+### Unsafe packets
+
+It might be desired to investigate packets that are not recognized. (For example analyzing occurrence frequency.) For this we can use `parseUnsafeNmeaSentence`.
+
+This function will parse every packet, even if the ID is unrecognized. `sentenceId` for these packets are always `?`.
+
+```js
+    try {
+        const packet = nmea.parseUnsafeNmeaSentence(line);
+
+        if (packet.sentenceId === "?") {
+            console.log("Got an unknown packet with signature:", packet.fields[0]);
+        }
+
+    ...
+```
+
 ## Acknowledgements
 
 This module was based on the NPM [nmea](https://www.npmjs.com/package/nmea) and
