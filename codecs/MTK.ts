@@ -31,7 +31,7 @@ export interface MTKPacket extends PacketStub<typeof sentenceId> {
 export function decodeSentence(stub: PacketStub, fields: string[]): MTKPacket {
     return {
         ...initStubFields(stub, sentenceId, sentenceName),
-        packetType: parseIntSafe(fields[0].substr(3)),
+        packetType: parseIntSafe(stub.sentenceId.substr(3)),
         data: fields.slice(1).map<string|number>(parseNumberOrString)
     };
 }

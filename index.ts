@@ -86,7 +86,6 @@ export function parseNmeaSentence(sentence: string): Packet {
         talkerId = fields[0].substr(1, 2);
         sentenceId = fields[0].substr(3);
     }
-    fields[0] = sentenceId;
 
     let parser = decoders[sentenceId];
     if (!parser && sentenceId.substr(0, 3) === "MTK") {
