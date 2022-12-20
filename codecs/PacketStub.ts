@@ -3,6 +3,7 @@ export interface PacketStub<IdType = string> {
     talkerId?: string;
 
     // User info
+    chxOk?: true;
     sentenceName?: string;
 }
 
@@ -10,11 +11,12 @@ export function initStubFields<IdType>(stub: PacketStub, id: IdType, sentenceNam
     return {
         sentenceId: id,
         talkerId: stub.talkerId,
+        chxOk: stub.chxOk,
         sentenceName
     };
 }
 
-export function parseStub(field0: string): PacketStub {
+export function parseStub(field0: string, chxOk: boolean): PacketStub {
 
     let talkerId: string;
     let sentenceId: string;
@@ -27,5 +29,5 @@ export function parseStub(field0: string): PacketStub {
         sentenceId = field0.substr(3);
     }
 
-    return { talkerId, sentenceId };
+    return { talkerId, sentenceId, chxOk: (chxOk ? chxOk : undefined) };
 }

@@ -73,10 +73,16 @@ const encoders: { [sentenceId: string]: Encoder } = {
 
 export interface PacketFactory<PacketType> {
     assemble: (stub: PacketStub, fields: string[]) => PacketType | null;
+    ableToParseBadChecksum: boolean;
 }
 
 
 export class DefaultPacketFactory<CustomPacketType = null> implements PacketFactory<Packet | CustomPacketType> {
+    ableToParseBadChecksum: boolean;
+
+    constructor(ableToParseBadChecksum = false) {
+        this.ableToParseBadChecksum = ableToParseBadChecksum;
+    }
 
     static getParser(stub: PacketStub): Decoder {
 
@@ -108,12 +114,18 @@ const DEFAULT_PACKET_FACTORY = new DefaultPacketFactory();
 
 
 export function parseGenericPacket<PacketType>(sentence: string, factory: PacketFactory<PacketType>): PacketType {
+    let chxOk = true;
+
     if (!validNmeaChecksum(sentence)) {
-        throw Error(`Invalid sentence: "${sentence}".`);
+        if (!factory.ableToParseBadChecksum) {
+            throw Error(`Invalid sentence: "${sentence}".`);
+        }
+
+        chxOk = false;
     }
 
     const fields = sentence.split("*")[0].split(",");
-    const stub = parseStub(fields[0]);
+    const stub = parseStub(fields[0], chxOk);
     const packet = factory.assemble(stub, fields);
 
     if (!packet) {
@@ -147,6 +159,10 @@ export function encodeNmeaPacket(packet: Packet, talker: string = "P"): string {
 export type UnsafePacket = Packet | UnknownPacket;
 
 export class UnsafePacketFactory extends DefaultPacketFactory<UnknownPacket> {
+    constructor() {
+        super(true);
+    }
+
     assembleCustomPacket(stub: PacketStub<string>, fields: string[]): UnknownPacket | null {
         return decodeUnknown(stub, fields);
     }

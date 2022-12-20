@@ -24,4 +24,15 @@ describe("UnsafeParsing", (): void => {
         (packet.talkerId === "GP").should.equal(true);
         getUnsafePacketId(packet).should.equal("TXT");
     });
+
+    const BAD_CHECKSUM_SENTENCE = "$IIHDM,201.5,M*21";
+    const GOOD_CHECKSUM_SENTENCE = "$IIDBT,036.41,f,011.10,M,005.99,F*25";
+
+    it("checksum", (): void => {
+        let packet = parseUnsafeNmeaSentence(BAD_CHECKSUM_SENTENCE);
+        (packet.chxOk !== true).should.equal(true);
+
+        packet = parseUnsafeNmeaSentence(GOOD_CHECKSUM_SENTENCE);
+        (packet.chxOk === true).should.equal(true);
+    });
 });
