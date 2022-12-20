@@ -19,7 +19,7 @@ import { decodeSentence as decodeVHW, VHWPacket } from "./codecs/VHW";
 import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } from "./codecs/VTG";
 import { decodeSentence as decodeZDA, ZDAPacket } from "./codecs/ZDA";
 
-import { PacketStub } from "./codecs/PacketStub";
+import { parseStub, PacketStub } from "./codecs/PacketStub";
 import { validNmeaChecksum } from "./helpers";
 
 
@@ -76,27 +76,18 @@ export function parseNmeaSentence(sentence: string): Packet {
     }
 
     const fields = sentence.split("*")[0].split(",");
+    const stub = parseStub(fields[0]);
 
-    let talkerId: string;
-    let sentenceId: string;
-    if (fields[0].charAt(1) === "P") {
-        talkerId = "P"; // Proprietary
-        sentenceId = fields[0].substr(2);
-    } else {
-        talkerId = fields[0].substr(1, 2);
-        sentenceId = fields[0].substr(3);
-    }
-
-    let parser = decoders[sentenceId];
-    if (!parser && sentenceId.substr(0, 3) === "MTK") {
+    let parser = decoders[stub.sentenceId];
+    if (!parser && stub.sentenceId.substr(0, 3) === "MTK") {
         parser = decodeMTK;
     }
 
     if (!parser) {
-        throw Error(`No known parser for sentence ID "${sentenceId}".`);
+        throw Error(`No known parser for sentence ID "${stub.sentenceId}".`);
     }
 
-    return parser({ sentenceId, talkerId }, fields);
+    return parser(stub, fields);
 }
 
 
