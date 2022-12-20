@@ -103,10 +103,10 @@ export class DefaultPacketFactory<CustomPacketType = null> implements PacketFact
     }
 }
 
+const DEFAULT_PACKET_FACTORY = new DefaultPacketFactory();
 
-export function parseNmeaSentence(sentence: string): Packet {
-    const factory = new DefaultPacketFactory();
 
+export function parseGenericPacket<PacketType>(sentence: string, factory: PacketFactory<PacketType>): PacketType {
     if (!validNmeaChecksum(sentence)) {
         throw Error(`Invalid sentence: "${sentence}".`);
     }
@@ -120,6 +120,11 @@ export function parseNmeaSentence(sentence: string): Packet {
     }
 
     return packet;
+}
+
+
+export function parseNmeaSentence(sentence: string): Packet {
+    return parseGenericPacket(sentence, DEFAULT_PACKET_FACTORY);
 }
 
 

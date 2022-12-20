@@ -70,6 +70,14 @@ export function createNmeaChecksumFooter(sentenceWithoutChecksum: string): strin
 }
 
 
+/**
+ * Append the correct trailing "*xx" footer for an NMEA string and return the result.
+ */
+export function appendChecksumFooter(sentenceWithoutChecksum: string): string {
+    return sentenceWithoutChecksum + createNmeaChecksumFooter(sentenceWithoutChecksum);
+}
+
+
 
 // =========================================
 // field encoders

@@ -103,6 +103,55 @@ This is a fork of the [nmea](https://www.npmjs.com/package/nmea) package with
 all dependencies removed and TypeScript typing information added.
 
 
+## Extending the library
+
+### Custom packets
+
+Custom (proprietary) sentences can be defined with type assurance and added to the parsing algorithm by supplying a custom factory which overrides the `assembleCustomPacket` function of `DefaultPacketFactory` class.
+
+
+```ts
+const logSentenceId: "LOG" = "LOG";
+
+export interface LogPacket extends PacketStub<typeof logSentenceId> {
+    logNum: number;
+    logMsg: string;
+}
+
+class CustomPacketFactory extends DefaultPacketFactory<LogPacket> {
+    assembleCustomPacket(stub: PacketStub, fields: string[]): LogPacket | null {
+        if (stub.sentenceId === logSentenceId) {
+            return {
+                ...initStubFields(logSentenceId, stub),
+                logNum: parseInt(fields[1], 10),
+                logMsg: fields[2]
+            };
+        }
+
+        return null;
+    }
+}
+
+export const CUSTOM_PACKET_FACTORY = new CustomPacketFactory();
+```
+
+This extends the first example the following way:
+
+```js
+    try {
+        const packet = nmea.parseGenericPacket(line, CUSTOM_PACKET_FACTORY);
+
+        if (packet.sentenceId === "LOG") {
+            console.log("Got a log message:", packet.logMsg);
+        }
+
+    ...
+```
+
+Make sure not to conflict with built in sentence types!
+
+For more info see **CustomPacketsTest.ts**
+
 ## Acknowledgements
 
 This module was based on the NPM [nmea](https://www.npmjs.com/package/nmea) and
