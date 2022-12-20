@@ -5,8 +5,8 @@
 # NMEA 0183 sentence parser and encoder
 
 This library parses and encodes some NMEA 0183 sentences.  These are typically
-used by GPS recievers to send information on position, heading, speed and
-acuracy.  The official standard can be found
+used by GPS receivers to send information on position, heading, speed and
+accuracy.  The official standard can be found
 [here](http://www.nmea.org/content/nmea_standards/nmea_0183_v_410.asp) and is
 described in clear terms [here](http://catb.org/gpsd/NMEA.html).
 
