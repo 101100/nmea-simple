@@ -21,16 +21,15 @@
  */
 
 import { parseFloatSafe, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GST" = "GST";
 export const sentenceName = "GPS pseudorange noise statistics";
 
 
-export interface GSTPacket {
+export interface GSTPacket extends PacketStub {
     sentenceId: "GST";
-    sentenceName?: string;
-    talkerId?: string;
     time: Date;
     totalRms: number;
     semiMajorError: number;

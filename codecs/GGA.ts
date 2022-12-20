@@ -38,6 +38,7 @@
 */
 
 import { createNmeaChecksumFooter, encodeAltitude, encodeFixed, encodeGeoidalSeperation, encodeLatitude, encodeLongitude, encodeTime, encodeValue, parseFloatSafe, parseIntSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GGA" = "GGA";
@@ -48,10 +49,8 @@ export type FixType = "none" | "fix" | "delta" | "pps" | "rtk" | "frtk" | "estim
 const FixTypes: FixType[] = [ "none", "fix", "delta", "pps", "rtk", "frtk", "estimated", "manual", "simulation" ];
 
 
-export interface GGAPacket {
+export interface GGAPacket extends PacketStub {
     sentenceId: "GGA";
-    sentenceName?: string;
-    talkerId?: string;
     time: Date;
     latitude: number;
     longitude: number;

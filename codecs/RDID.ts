@@ -15,16 +15,15 @@
  */
 
 import { parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "RDID" = "RDID";
 export const sentenceName = "RDI proprietary heading, pitch, and roll";
 
 
-export interface RDIDPacket {
+export interface RDIDPacket extends PacketStub {
     sentenceId: "RDID";
-    sentenceName?: string;
-    talkerId?: string;
     roll: number;
     pitch: number;
     heading: number;

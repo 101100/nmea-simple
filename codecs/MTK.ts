@@ -15,16 +15,15 @@
 
 
 import { createNmeaChecksumFooter, padLeft, parseIntSafe, parseNumberOrString } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "MTK" = "MTK";
 export const sentenceName = "Configuration packet";
 
 
-export interface MTKPacket {
+export interface MTKPacket extends PacketStub {
     sentenceId: "MTK";
-    sentenceName?: string;
-    talkerId?: string;
     packetType: number;
     data: (string | number)[];
 }

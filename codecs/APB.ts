@@ -34,16 +34,15 @@
  */
 
 import { parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "APB" = "APB";
 export const sentenceName = "Autopilot sentence \"B\"";
 
 
-export interface APBPacket {
+export interface APBPacket extends PacketStub {
     sentenceId: "APB";
-    sentenceName?: string;
-    talkerId?: string;
     status1: string;
     status2: string;
     xteMagn: number;

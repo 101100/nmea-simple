@@ -26,6 +26,7 @@
 
 
 import { parseFloatSafe, parseLatitude, parseLongitude } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "DTM" = "DTM";
@@ -42,10 +43,8 @@ export const sentenceName = "Datum reference";
 export type DatumCode = "W84" | "W72" | "S85" | "P90" | "999" | "";
 
 
-export interface DTMPacket {
+export interface DTMPacket extends PacketStub {
     sentenceId: "DTM";
-    sentenceName?: string;
-    talkerId?: string;
     datumCode: DatumCode;
     datumSubcode?: string;
     offsetLatitude: number;

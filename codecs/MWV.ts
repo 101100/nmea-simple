@@ -18,16 +18,15 @@
  */
 
 import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "MWV" = "MWV";
 export const sentenceName = "Wind speed and angle";
 
 
-export interface MWVPacket {
+export interface MWVPacket extends PacketStub {
     sentenceId: "MWV";
-    sentenceName?: string;
-    talkerId?: string;
     windAngle: number;
     reference: "relative" | "true";
     speed: number;

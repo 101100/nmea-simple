@@ -22,16 +22,15 @@
  */
 
 import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "VTG" = "VTG";
 export const sentenceName = "Track made good and ground speed";
 
 
-export interface VTGPacket {
+export interface VTGPacket extends PacketStub {
     sentenceId: "VTG";
-    sentenceName?: string;
-    talkerId?: string;
     trackTrue: number;
     trackMagnetic: number;
     speedKnots: number;

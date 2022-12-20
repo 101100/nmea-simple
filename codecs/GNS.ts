@@ -35,15 +35,14 @@
 */
 
 import { createNmeaChecksumFooter, encodeAltitudeNoUnits, encodeFixed, encodeGeoidalSeperationNoUnits, encodeLatitude, encodeLongitude, encodeTime, encodeValue, parseFloatSafe, parseIntSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GNS" = "GNS";
 export const sentenceName = "GNSS fix data";
 
-export interface GNSPacket {
+export interface GNSPacket extends PacketStub {
     sentenceId: "GNS";
-    sentenceName?: string;
-    talkerId?: string;
     time: Date;
     latitude: number;
     longitude: number;

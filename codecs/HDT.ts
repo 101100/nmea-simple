@@ -15,16 +15,15 @@
 
 
 import { createNmeaChecksumFooter, encodeFixed, parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "HDT" = "HDT";
 export const sentenceName = "Heading - true";
 
 
-export interface HDTPacket {
+export interface HDTPacket extends PacketStub {
     sentenceId: "HDT";
-    sentenceName?: string;
-    talkerId?: string;
     heading: number;
 }
 

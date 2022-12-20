@@ -20,16 +20,15 @@
  */
 
 import { parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "VHW" = "VHW";
 export const sentenceName = "Water speed and heading";
 
 
-export interface VHWPacket {
+export interface VHWPacket extends PacketStub {
     sentenceId: "VHW";
-    sentenceName?: string;
-    talkerId?: string;
     degreesTrue: number;
     degreesMagnetic: number;
     speedKnots: number;

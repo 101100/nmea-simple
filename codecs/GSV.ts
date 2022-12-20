@@ -38,6 +38,7 @@
  */
 
 import { parseIntSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GSV" = "GSV";
@@ -52,10 +53,8 @@ export interface Satellite {
 }
 
 
-export interface GSVPacket {
+export interface GSVPacket extends PacketStub {
     sentenceId: "GSV";
-    sentenceName?: string;
-    talkerId?: string;
     numberOfMessages: number;
     messageNumber: number;
     satellitesInView: number;

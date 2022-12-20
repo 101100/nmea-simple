@@ -26,6 +26,7 @@
  */
 
 import { parseFloatSafe, parseIntSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GSA" = "GSA";
@@ -36,10 +37,8 @@ export type ThreeDFixType = "unknown" | "none" | "2D" | "3D";
 const ThreeDFixTypes: ThreeDFixType[] = [ "unknown", "none", "2D", "3D" ];
 
 
-export interface GSAPacket {
+export interface GSAPacket extends PacketStub {
     sentenceId: "GSA";
-    sentenceName?: string;
-    talkerId?: string;
     selectionMode: "automatic" | "manual";
     fixMode: ThreeDFixType;
     satellites: number[];

@@ -18,16 +18,15 @@
  */
 
 import { createNmeaChecksumFooter, encodeFixed, parseFloatSafe } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "DBT" = "DBT";
 export const sentenceName = "Depth below transducer";
 
 
-export interface DBTPacket {
+export interface DBTPacket extends PacketStub {
     sentenceId: "DBT";
-    sentenceName?: string;
-    talkerId?: string;
     depthFeet: number;
     depthMeters: number;
     depthFathoms: number;

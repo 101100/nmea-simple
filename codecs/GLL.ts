@@ -22,16 +22,15 @@
  */
 
 import { createNmeaChecksumFooter, encodeLatitude, encodeLongitude, encodeTime, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GLL" = "GLL";
 export const sentenceName = "Geographic position - latitude and longitude";
 
 
-export interface GLLPacket {
+export interface GLLPacket extends PacketStub {
     sentenceId: "GLL";
-    sentenceName?: string;
-    talkerId?: string;
     latitude: number;
     longitude: number;
     time: Date;

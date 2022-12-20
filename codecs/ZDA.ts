@@ -18,14 +18,14 @@
  */
 
 import { parseIntSafe, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
+
 
 export const sentenceId: "ZDA" = "ZDA";
 export const sentenceName = "UTC, day, month, year, and local time zone";
 
-export interface ZDAPacket {
+export interface ZDAPacket extends PacketStub {
     sentenceId: "ZDA";
-    sentenceName: string;
-    talkerId?: string;
     datetime: Date;
     localZoneHours: number;
     localZoneMinutes: number;

@@ -27,16 +27,15 @@
  */
 
 import { parseDatetime, parseFloatSafe, parseLatitude, parseLongitude } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "RMC" = "RMC";
 export const sentenceName = "Recommended minimum navigation information";
 
 
-export interface RMCPacket {
+export interface RMCPacket extends PacketStub {
     sentenceId: "RMC";
-    sentenceName?: string;
-    talkerId?: string;
     datetime: Date;
     status: "valid" | "warning";
     latitude: number;

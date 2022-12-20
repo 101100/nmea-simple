@@ -27,16 +27,15 @@
 
 
 import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "BWC" = "BWC";
 export const sentenceName = "Bearing and distance to waypoint - great circle";
 
 
-export interface BWCPacket {
+export interface BWCPacket extends PacketStub {
     sentenceId: "BWC";
-    sentenceName?: string;
-    talkerId?: string;
     time: Date;
     bearingLatitude: number;
     bearingLongitude: number;
