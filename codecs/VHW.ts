@@ -20,15 +20,14 @@
  */
 
 import { parseFloatSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "VHW" = "VHW";
 export const sentenceName = "Water speed and heading";
 
 
-export interface VHWPacket extends PacketStub {
-    sentenceId: "VHW";
+export interface VHWPacket extends PacketStub<typeof sentenceId> {
     degreesTrue: number;
     degreesMagnetic: number;
     speedKnots: number;
@@ -36,10 +35,9 @@ export interface VHWPacket extends PacketStub {
 }
 
 
-export function decodeSentence(fields: string[]): VHWPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): VHWPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         degreesTrue: parseFloatSafe(fields[1]),
         degreesMagnetic: parseFloatSafe(fields[3]),
         speedKnots: parseFloatSafe(fields[5]),

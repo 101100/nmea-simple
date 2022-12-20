@@ -19,6 +19,7 @@ import { decodeSentence as decodeVHW, VHWPacket } from "./codecs/VHW";
 import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } from "./codecs/VTG";
 import { decodeSentence as decodeZDA, ZDAPacket } from "./codecs/ZDA";
 
+import { PacketStub } from "./codecs/PacketStub";
 import { validNmeaChecksum } from "./helpers";
 
 
@@ -26,7 +27,7 @@ export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket |
 export { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket };
 
 
-type Decoder = (parts: string[]) => Packet;
+type Decoder = (stub: PacketStub, parts: string[]) => Packet;
 
 
 const decoders: { [sentenceId: string]: Decoder } = {
@@ -96,9 +97,7 @@ export function parseNmeaSentence(sentence: string): Packet {
         throw Error(`No known parser for sentence ID "${sentenceId}".`);
     }
 
-    const packet = parser(fields);
-    packet.talkerId = talkerId;
-    return packet;
+    return parser({ sentenceId, talkerId }, fields);
 }
 
 

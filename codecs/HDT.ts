@@ -15,23 +15,21 @@
 
 
 import { createNmeaChecksumFooter, encodeFixed, parseFloatSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "HDT" = "HDT";
 export const sentenceName = "Heading - true";
 
 
-export interface HDTPacket extends PacketStub {
-    sentenceId: "HDT";
+export interface HDTPacket extends PacketStub<typeof sentenceId> {
     heading: number;
 }
 
 
-export function decodeSentence(fields: string[]): HDTPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): HDTPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         heading: parseFloatSafe(fields[1])
     };
 }

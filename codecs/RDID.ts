@@ -15,25 +15,23 @@
  */
 
 import { parseFloatSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "RDID" = "RDID";
 export const sentenceName = "RDI proprietary heading, pitch, and roll";
 
 
-export interface RDIDPacket extends PacketStub {
-    sentenceId: "RDID";
+export interface RDIDPacket extends PacketStub<typeof sentenceId> {
     roll: number;
     pitch: number;
     heading: number;
 }
 
 
-export function decodeSentence(fields: string[]): RDIDPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): RDIDPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         roll: parseFloatSafe(fields[1]),
         pitch: parseFloatSafe(fields[2]),
         heading: parseFloatSafe(fields[3])

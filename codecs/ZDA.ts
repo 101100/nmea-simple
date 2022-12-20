@@ -18,23 +18,21 @@
  */
 
 import { parseIntSafe, parseTime } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "ZDA" = "ZDA";
 export const sentenceName = "UTC, day, month, year, and local time zone";
 
-export interface ZDAPacket extends PacketStub {
-    sentenceId: "ZDA";
+export interface ZDAPacket extends PacketStub<typeof sentenceId> {
     datetime: Date;
     localZoneHours: number;
     localZoneMinutes: number;
 }
 
-export function decodeSentence(fields: string[]): ZDAPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): ZDAPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         datetime: parseTime(fields[1], fields.slice(2, 5).join("")),
         localZoneHours: parseIntSafe(fields[5]),
         localZoneMinutes: parseIntSafe(fields[6])

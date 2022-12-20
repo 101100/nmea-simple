@@ -34,15 +34,14 @@
  */
 
 import { parseFloatSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "APB" = "APB";
 export const sentenceName = "Autopilot sentence \"B\"";
 
 
-export interface APBPacket extends PacketStub {
-    sentenceId: "APB";
+export interface APBPacket extends PacketStub<typeof sentenceId> {
     status1: string;
     status2: string;
     xteMagn: number;
@@ -60,10 +59,9 @@ export interface APBPacket extends PacketStub {
 }
 
 
-export function decodeSentence(fields: string[]): APBPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): APBPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         status1: fields[1],
         status2: fields[2],
         xteMagn: parseFloatSafe(fields[3]),

@@ -15,24 +15,22 @@
 
 
 import { createNmeaChecksumFooter, padLeft, parseIntSafe, parseNumberOrString } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "MTK" = "MTK";
 export const sentenceName = "Configuration packet";
 
 
-export interface MTKPacket extends PacketStub {
-    sentenceId: "MTK";
+export interface MTKPacket extends PacketStub<typeof sentenceId> {
     packetType: number;
     data: (string | number)[];
 }
 
 
-export function decodeSentence(fields: string[]): MTKPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): MTKPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         packetType: parseIntSafe(fields[0].substr(3)),
         data: fields.slice(1).map<string|number>(parseNumberOrString)
     };

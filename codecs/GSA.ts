@@ -26,7 +26,7 @@
  */
 
 import { parseFloatSafe, parseIntSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GSA" = "GSA";
@@ -37,8 +37,7 @@ export type ThreeDFixType = "unknown" | "none" | "2D" | "3D";
 const ThreeDFixTypes: ThreeDFixType[] = [ "unknown", "none", "2D", "3D" ];
 
 
-export interface GSAPacket extends PacketStub {
-    sentenceId: "GSA";
+export interface GSAPacket extends PacketStub<typeof sentenceId> {
     selectionMode: "automatic" | "manual";
     fixMode: ThreeDFixType;
     satellites: number[];
@@ -48,7 +47,7 @@ export interface GSAPacket extends PacketStub {
 }
 
 
-export function decodeSentence(fields: string[]): GSAPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): GSAPacket {
     const sats: number[] = [];
 
     for (let i = 3; i < 15; i++) {
@@ -58,8 +57,7 @@ export function decodeSentence(fields: string[]): GSAPacket {
     }
 
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         selectionMode: fields[1] === "A" ? "automatic" : "manual",
         fixMode: ThreeDFixTypes[parseIntSafe(fields[2])],
         satellites: sats,

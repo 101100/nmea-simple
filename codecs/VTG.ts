@@ -22,15 +22,14 @@
  */
 
 import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "VTG" = "VTG";
 export const sentenceName = "Track made good and ground speed";
 
 
-export interface VTGPacket extends PacketStub {
-    sentenceId: "VTG";
+export interface VTGPacket extends PacketStub<typeof sentenceId> {
     trackTrue: number;
     trackMagnetic: number;
     speedKnots: number;
@@ -39,10 +38,9 @@ export interface VTGPacket extends PacketStub {
 }
 
 
-export function decodeSentence(fields: string[]): VTGPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): VTGPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         trackTrue: parseFloatSafe(fields[1]),
         trackMagnetic: parseFloatSafe(fields[3]),
         speedKnots: parseFloatSafe(fields[5]),

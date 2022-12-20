@@ -27,15 +27,14 @@
  */
 
 import { parseDatetime, parseFloatSafe, parseLatitude, parseLongitude } from "../helpers";
-import { PacketStub } from "./PacketStub";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "RMC" = "RMC";
 export const sentenceName = "Recommended minimum navigation information";
 
 
-export interface RMCPacket extends PacketStub {
-    sentenceId: "RMC";
+export interface RMCPacket extends PacketStub<typeof sentenceId> {
     datetime: Date;
     status: "valid" | "warning";
     latitude: number;
@@ -48,10 +47,9 @@ export interface RMCPacket extends PacketStub {
 }
 
 
-export function decodeSentence(fields: string[]): RMCPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): RMCPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         datetime: parseDatetime(fields[9], fields[1]),
         status: fields[2] === "A" ? "valid" : "warning",
         latitude: parseLatitude(fields[3], fields[4]),
