@@ -5,8 +5,8 @@
 # NMEA 0183 sentence parser and encoder
 
 This library parses and encodes some NMEA 0183 sentences.  These are typically
-used by GPS recievers to send information on position, heading, speed and
-acuracy.  The official standard can be found
+used by GPS receivers to send information on position, heading, speed and
+accuracy.  The official standard can be found
 [here](http://www.nmea.org/content/nmea_standards/nmea_0183_v_410.asp) and is
 described in clear terms [here](http://catb.org/gpsd/NMEA.html).
 
@@ -102,6 +102,77 @@ The following sentence types can be encoded by this library:
 This is a fork of the [nmea](https://www.npmjs.com/package/nmea) package with
 all dependencies removed and TypeScript typing information added.
 
+
+## Extending the library
+
+### Custom packets
+
+Custom (proprietary) sentences can be defined with type assurance and added to the parsing algorithm by supplying a custom factory which overrides the `assembleCustomPacket` function of `DefaultPacketFactory` class.
+
+
+```ts
+const logSentenceId: "LOG" = "LOG";
+
+export interface LogPacket extends PacketStub<typeof logSentenceId> {
+    logNum: number;
+    logMsg: string;
+}
+
+class CustomPacketFactory extends DefaultPacketFactory<LogPacket> {
+    assembleCustomPacket(stub: PacketStub, fields: string[]): LogPacket | null {
+        if (stub.sentenceId === logSentenceId) {
+            return {
+                ...initStubFields(logSentenceId, stub),
+                logNum: parseInt(fields[1], 10),
+                logMsg: fields[2]
+            };
+        }
+
+        return null;
+    }
+}
+
+export const CUSTOM_PACKET_FACTORY = new CustomPacketFactory();
+```
+
+This extends the first example the following way:
+
+```js
+    try {
+        const packet = nmea.parseGenericPacket(line, CUSTOM_PACKET_FACTORY);
+
+        if (packet.sentenceId === "LOG") {
+            console.log("Got a log message:", packet.logMsg);
+        }
+
+    ...
+```
+
+Make sure not to conflict with built in sentence types!
+
+For more info see **CustomPacketsTest.ts**
+
+### Unsafe packets
+
+It might be desired to investigate packets that are not recognized or have bad checksum. (For example analyzing occurrence frequency.) For this we can use `parseUnsafeNmeaSentence`.
+
+This function will parse every packet, even if the ID is unrecognized. `sentenceId` for these packets are always `?`.
+
+```js
+    try {
+        const packet = nmea.parseUnsafeNmeaSentence(line);
+
+        if (packet.chxOk !== true) {
+            console.log("Skipping packet with bad checksum:");
+            return;
+        }
+
+        if (packet.sentenceId === "?") {
+            console.log("Got an unknown packet with signature:", packet.fields[0]);
+        }
+
+    ...
+```
 
 ## Acknowledgements
 

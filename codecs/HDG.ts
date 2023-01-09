@@ -17,16 +17,14 @@
  */
 
 import { parseFloatSafe } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "HDG" = "HDG";
 export const sentenceName = "Heading - deviation and variation";
 
 
-export interface HDGPacket {
-    sentenceId: "HDG";
-    sentenceName?: string;
-    talkerId?: string;
+export interface HDGPacket extends PacketStub<typeof sentenceId> {
     heading: number;
     deviation: number;
     deviationDirection: "" | "E" | "W";
@@ -35,10 +33,9 @@ export interface HDGPacket {
 }
 
 
-export function decodeSentence(fields: string[]): HDGPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): HDGPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         heading: parseFloatSafe(fields[1]),
         deviation: parseFloatSafe(fields[2]),
         deviationDirection: fields[3] === "E" ? "E" : fields[3] === "W" ? "W" : "",

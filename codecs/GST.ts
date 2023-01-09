@@ -21,16 +21,14 @@
  */
 
 import { parseFloatSafe, parseTime } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GST" = "GST";
 export const sentenceName = "GPS pseudorange noise statistics";
 
 
-export interface GSTPacket {
-    sentenceId: "GST";
-    sentenceName?: string;
-    talkerId?: string;
+export interface GSTPacket extends PacketStub<typeof sentenceId> {
     time: Date;
     totalRms: number;
     semiMajorError: number;
@@ -42,10 +40,9 @@ export interface GSTPacket {
 }
 
 
-export function decodeSentence(fields: string[]): GSTPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): GSTPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         time: parseTime(fields[1]),
         totalRms: parseFloatSafe(fields[2]),
         semiMajorError: parseFloatSafe(fields[3]),

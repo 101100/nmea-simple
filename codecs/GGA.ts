@@ -38,6 +38,7 @@
 */
 
 import { createNmeaChecksumFooter, encodeAltitude, encodeFixed, encodeGeoidalSeperation, encodeLatitude, encodeLongitude, encodeTime, encodeValue, parseFloatSafe, parseIntSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GGA" = "GGA";
@@ -48,10 +49,7 @@ export type FixType = "none" | "fix" | "delta" | "pps" | "rtk" | "frtk" | "estim
 const FixTypes: FixType[] = [ "none", "fix", "delta", "pps", "rtk", "frtk", "estimated", "manual", "simulation" ];
 
 
-export interface GGAPacket {
-    sentenceId: "GGA";
-    sentenceName?: string;
-    talkerId?: string;
+export interface GGAPacket extends PacketStub<typeof sentenceId> {
     time: Date;
     latitude: number;
     longitude: number;
@@ -65,10 +63,9 @@ export interface GGAPacket {
 }
 
 
-export function decodeSentence(fields: string[]): GGAPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): GGAPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         time: parseTime(fields[1]),
         latitude: parseLatitude(fields[2], fields[3]),
         longitude: parseLongitude(fields[4], fields[5]),

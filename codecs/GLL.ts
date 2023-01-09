@@ -22,16 +22,14 @@
  */
 
 import { createNmeaChecksumFooter, encodeLatitude, encodeLongitude, encodeTime, parseLatitude, parseLongitude, parseTime } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GLL" = "GLL";
 export const sentenceName = "Geographic position - latitude and longitude";
 
 
-export interface GLLPacket {
-    sentenceId: "GLL";
-    sentenceName?: string;
-    talkerId?: string;
+export interface GLLPacket extends PacketStub<typeof sentenceId> {
     latitude: number;
     longitude: number;
     time: Date;
@@ -40,10 +38,9 @@ export interface GLLPacket {
 }
 
 
-export function decodeSentence(fields: string[]): GLLPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): GLLPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         latitude: parseLatitude(fields[1], fields[2]),
         longitude: parseLongitude(fields[3], fields[4]),
         time: parseTime(fields[5]),

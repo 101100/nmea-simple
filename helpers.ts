@@ -70,6 +70,14 @@ export function createNmeaChecksumFooter(sentenceWithoutChecksum: string): strin
 }
 
 
+/**
+ * Append the correct trailing "*xx" footer for an NMEA string and return the result.
+ */
+export function appendChecksumFooter(sentenceWithoutChecksum: string): string {
+    return sentenceWithoutChecksum + createNmeaChecksumFooter(sentenceWithoutChecksum);
+}
+
+
 
 // =========================================
 // field encoders
@@ -281,66 +289,52 @@ export function parseNumberOrString(str?: string): number | string {
 
 
 /**
+ * Parses coordinate given as "dddmm.mm", "ddmm.mm", "dmm.mm" or "mm.mm"
+ */
+export function parseDmCoordinate(coordinate: string): number {
+
+    const dotIdx = coordinate.indexOf(".");
+
+    if (dotIdx < 0) {
+        return 0;
+    }
+
+    let degrees: string;
+    let minutes: string;
+
+    if (dotIdx >= 3) {
+        degrees = coordinate.substring(0, dotIdx - 2);
+        minutes = coordinate.substring(dotIdx - 2);
+    } else {
+        // no degrees, just minutes (nonstandard but a buggy unit might do this)
+        degrees = "0";
+        minutes = coordinate;
+    }
+
+    return (parseFloat(degrees) + (parseFloat(minutes) / 60.0));
+}
+
+/**
  * Parses latitude given as "ddmm.mm", "dmm.mm" or "mm.mm" (assuming zero
  * degrees) along with a given hemisphere of "N" or "S" into decimal degrees,
- * where north is positive and south is negetive.
+ * where north is positive and south is negative.
  */
 export function parseLatitude(lat: string, hemi: string): number {
     const hemisphere = (hemi === "N") ? 1.0 : -1.0;
 
-    const a = lat.split(".");
-
-    let degrees: string;
-    let minutes: string;
-    if (a[0].length === 4) {
-        // two digits of degrees
-        degrees = lat.substring(0, 2);
-        minutes = lat.substring(2);
-    } else if (a[0].length === 3) {
-        // 1 digit of degrees (in case no leading zero)
-        degrees = lat.substring(0, 1);
-        minutes = lat.substring(1);
-    } else {
-        // no degrees, just minutes (nonstandard but a buggy unit might do this)
-        degrees = "0";
-        minutes = lat;
-    }
-
-    return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * hemisphere;
+    return parseDmCoordinate(lat) * hemisphere;
 }
 
 
 /**
  * Parses latitude given as "dddmm.mm", "ddmm.mm", "dmm.mm" or "mm.mm" (assuming
  * zero degrees) along with a given hemisphere of "E" or "W" into decimal
- * degrees, where east is positive and west is negetive.
+ * degrees, where east is positive and west is negative.
  */
 export function parseLongitude(lon: string, hemi: string): number {
-    const h = (hemi === "E") ? 1.0 : -1.0;
+    const hemisphere = (hemi === "E") ? 1.0 : -1.0;
 
-    const a = lon.split(".");
-
-    let degrees: string;
-    let minutes: string;
-    if (a[0].length === 5) {
-        // three digits of degrees
-        degrees = lon.substring(0, 3);
-        minutes = lon.substring(3);
-    } else if (a[0].length === 4) {
-        // 2 digits of degrees (in case no leading zero)
-        degrees = lon.substring(0, 2);
-        minutes = lon.substring(2);
-    } else if (a[0].length === 3) {
-        // 1 digit of degrees (in case no leading zero)
-        degrees = lon.substring(0, 1);
-        minutes = lon.substring(1);
-    } else {
-        // no degrees, just minutes (nonstandard but a buggy unit might do this)
-        degrees = "0";
-        minutes = lon;
-    }
-
-    return (parseFloat(degrees) + (parseFloat(minutes) / 60.0)) * h;
+    return parseDmCoordinate(lon) * hemisphere;
 }
 
 /**

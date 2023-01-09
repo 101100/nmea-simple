@@ -18,16 +18,14 @@
  */
 
 import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "MWV" = "MWV";
 export const sentenceName = "Wind speed and angle";
 
 
-export interface MWVPacket {
-    sentenceId: "MWV";
-    sentenceName?: string;
-    talkerId?: string;
+export interface MWVPacket extends PacketStub<typeof sentenceId> {
     windAngle: number;
     reference: "relative" | "true";
     speed: number;
@@ -36,10 +34,9 @@ export interface MWVPacket {
 }
 
 
-export function decodeSentence(fields: string[]): MWVPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): MWVPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         windAngle: parseFloatSafe(fields[1]),
         reference: fields[2] === "R" ? "relative" : "true",
         speed: parseFloatSafe(fields[3]),

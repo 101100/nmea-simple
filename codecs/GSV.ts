@@ -38,6 +38,7 @@
  */
 
 import { parseIntSafe } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "GSV" = "GSV";
@@ -52,10 +53,7 @@ export interface Satellite {
 }
 
 
-export interface GSVPacket {
-    sentenceId: "GSV";
-    sentenceName?: string;
-    talkerId?: string;
+export interface GSVPacket extends PacketStub<typeof sentenceId> {
     numberOfMessages: number;
     messageNumber: number;
     satellitesInView: number;
@@ -63,7 +61,7 @@ export interface GSVPacket {
 }
 
 
-export function decodeSentence(fields: string[]): GSVPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): GSVPacket {
     const numRecords = (fields.length - 4) / 4;
     const sats: Satellite[] = [];
 
@@ -79,8 +77,7 @@ export function decodeSentence(fields: string[]): GSVPacket {
     }
 
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         numberOfMessages: parseIntSafe(fields[1]),
         messageNumber: parseIntSafe(fields[2]),
         satellitesInView: parseIntSafe(fields[3]),

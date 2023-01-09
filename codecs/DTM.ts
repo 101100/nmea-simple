@@ -26,6 +26,7 @@
 
 
 import { parseFloatSafe, parseLatitude, parseLongitude } from "../helpers";
+import { initStubFields, PacketStub } from "./PacketStub";
 
 
 export const sentenceId: "DTM" = "DTM";
@@ -42,10 +43,7 @@ export const sentenceName = "Datum reference";
 export type DatumCode = "W84" | "W72" | "S85" | "P90" | "999" | "";
 
 
-export interface DTMPacket {
-    sentenceId: "DTM";
-    sentenceName?: string;
-    talkerId?: string;
+export interface DTMPacket extends PacketStub<typeof sentenceId> {
     datumCode: DatumCode;
     datumSubcode?: string;
     offsetLatitude: number;
@@ -55,10 +53,9 @@ export interface DTMPacket {
 }
 
 
-export function decodeSentence(fields: string[]): DTMPacket {
+export function decodeSentence(stub: PacketStub, fields: string[]): DTMPacket {
     return {
-        sentenceId: sentenceId,
-        sentenceName: sentenceName,
+        ...initStubFields(stub, sentenceId, sentenceName),
         datumCode: parseDatumCode(fields[1]),
         datumSubcode: fields[2] || undefined,
         offsetLatitude: parseLatitude(fields[3], fields[4]),
