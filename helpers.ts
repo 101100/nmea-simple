@@ -337,6 +337,33 @@ export function parseLongitude(lon: string, hemi: string): number {
     return parseDmCoordinate(lon) * hemisphere;
 }
 
+function getYearFromString(yearString: string, rmcCompatible: boolean): number {
+    if (yearString.length === 4) {
+        return Number(yearString);
+    } else if (yearString.length === 2) {
+        if (rmcCompatible) {
+            // GPRMC date doesn't specify century. GPS came out in 1973 so if the year
+            // is less than 73, assume it's 20xx, otherwise assume it is 19xx.
+            let year = Number(yearString);
+
+            if (year < 73) {
+                year = 2000 + year;
+            }
+            else {
+                year = 1900 + year;
+            }
+
+            return year;
+        }
+        else {
+            return Number("20" + yearString);
+        }
+    }
+    else {
+        throw Error(`Unexpected year string: ${yearString}`);
+    }
+}
+
 /**
  * Parses a UTC time and optionally a date and returns a Date
  * object.
@@ -344,7 +371,7 @@ export function parseLongitude(lon: string, hemi: string): number {
  * @param {String=} date Optional date in format the ddmmyyyy or ddmmyy
  * @returns {Date}
  */
-export function parseTime(time: string, date?: string): Date {
+export function parseTime(time: string, date?: string, rmcCompatible = false): Date {
 
     if (time === "") {
         return new Date(0);
@@ -358,14 +385,7 @@ export function parseTime(time: string, date?: string): Date {
         const month = parseInt(date.slice(2, 4), 10) - 1;
         const day = date.slice(0, 2);
 
-        if (year.length === 4) {
-            ret.setUTCFullYear(Number(year), Number(month), Number(day));
-        } else {
-            // If we need to parse older GPRMC data, we should hack something like
-            // year < 73 ? 2000+year : 1900+year
-            // Since GPS appeared in 1973
-            ret.setUTCFullYear(Number("20" + year), Number(month), Number(day));
-        }
+        ret.setUTCFullYear(getYearFromString(year, rmcCompatible), Number(month), Number(day));
     }
 
     ret.setUTCHours(Number(time.slice(0, 2)));
@@ -382,33 +402,4 @@ export function parseTime(time: string, date?: string): Date {
     ret.setUTCMilliseconds(Number(ms));
 
     return ret;
-}
-
-
-/**
- * Parses a date in the format "yyMMdd" along with a time in the format
- * "hhmmss" or "hhmmss.ss" and returns a Date object.
- */
-export function parseDatetime(date: string, time: string): Date {
-    const day = parseInt(date.slice(0, 2), 10);
-    const month = parseInt(date.slice(2, 4), 10);
-    let year = parseInt(date.slice(4, 6), 10);
-    // GPRMC date doesn't specify century. GPS came out in 1973 so if the year
-    // is less than 73, assume it's 20xx, otherwise assume it is 19xx.
-    if (year < 73) {
-        year = year + 2000;
-    }
-    else {
-        year = year + 1900;
-    }
-
-    const hours = parseInt(time.slice(0, 2), 10);
-    const minutes = parseInt(time.slice(2, 4), 10);
-    const seconds = parseInt(time.slice(4, 6), 10);
-    let milliseconds = 0;
-    if (time.length === 9) {
-        milliseconds = parseInt(time.slice(7, 9), 10) * 10;
-    }
-
-    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds, milliseconds));
 }
