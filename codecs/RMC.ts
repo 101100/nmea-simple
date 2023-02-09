@@ -26,7 +26,7 @@
  * 13. Checksum
  */
 
-import { parseDatetime, parseFloatSafe, parseLatitude, parseLongitude } from "../helpers";
+import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
 import { initStubFields, PacketStub } from "./PacketStub";
 
 
@@ -50,7 +50,7 @@ export interface RMCPacket extends PacketStub<typeof sentenceId> {
 export function decodeSentence(stub: PacketStub, fields: string[]): RMCPacket {
     return {
         ...initStubFields(stub, sentenceId, sentenceName),
-        datetime: parseDatetime(fields[9], fields[1]),
+        datetime: parseTime(fields[1], fields[9], true),
         status: fields[2] === "A" ? "valid" : "warning",
         latitude: parseLatitude(fields[3], fields[4]),
         longitude: parseLongitude(fields[5], fields[6]),
