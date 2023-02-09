@@ -176,6 +176,6 @@ export function parseUnsafeNmeaSentence(sentence: string): UnsafePacket {
 }
 
 
-export function getUnsafePacketId(packet: UnsafePacket) : string {
+export function getUnsafePacketId(packet: UnsafePacket): string {
     return (packet.sentenceId === "?") ? packet.originalPacketId : packet.sentenceId;
 }
