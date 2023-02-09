@@ -2,7 +2,7 @@ import "should";
 
 import { initStubFields, PacketStub } from "../codecs/PacketStub";
 import { appendChecksumFooter } from "../helpers";
-import { parseGenericPacket, DefaultPacketFactory } from "../index";
+import { assertPacketIs, parseGenericPacket, DefaultPacketFactory } from "../index";
 
 
 
@@ -61,9 +61,7 @@ describe("CustomPackets", (): void => {
     it("Log", (): void => {
         const packet = parseGenericPacket(appendChecksumFooter("$P_LOG,5,everything is ok"), CUSTOM_PACKET_FACTORY);
 
-        if (packet.sentenceId !== logSentenceId) {
-            throw Error("Bad packet type");
-        }
+        assertPacketIs(logSentenceId, packet);
 
         packet.logNum.should.equal(5);
         packet.logMsg.should.equal("everything is ok");
@@ -72,9 +70,7 @@ describe("CustomPackets", (): void => {
     it("Btn", (): void => {
         const packet = parseGenericPacket(appendChecksumFooter("$P_BTN,0,L"), CUSTOM_PACKET_FACTORY);
 
-        if (packet.sentenceId !== buttonPressSentenceId) {
-            throw Error("Bad packet type");
-        }
+        assertPacketIs(buttonPressSentenceId, packet);
 
         packet.buttonId.should.equal(0);
         packet.longPress.should.equal(true);
