@@ -284,7 +284,7 @@ export function parseNumberOrString(str?: string): number | string {
 
     const num = parseFloat(str);
 
-    return num === NaN ? str : num;
+    return Number.isNaN(num) ? str : num;
 }
 
 

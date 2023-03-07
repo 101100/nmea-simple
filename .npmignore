@@ -1,4 +1,5 @@
-# .gitignore without /dist/
+# .gitignore without /dist/ and with tests
+/dist/tests/
 /node_modules/
-/typings/
+/tests/
 *.log

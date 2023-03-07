@@ -30,20 +30,20 @@
     "lint": "tslint *.ts codecs/*.ts examples/*.ts tests/*.ts",
     "lint-fix": "npm run lint -- --fix",
     "prepublish": "npm run test",
-    "test": "npm run build && mocha -R tap dist/tests"
+    "test": "npm run build && TS_NODE_PROJECT='./tsconfig.tests.json' mocha --require ts-node/register -R tap tests/*.ts"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 14"
   },
   "devDependencies": {
-    "@serialport/parser-readline": "^8.0.6",
-    "@types/mocha": "^7.0.2",
-    "@types/serialport": "^8.0.0",
-    "mocha": "^7.1.1",
-    "serialport": "^8.0.7",
+    "@serialport/parser-readline": "^10.5.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^14.0.0",
+    "mocha": "^10.2.0",
+    "serialport": "^10.5.0",
     "should": "^13.2.3",
-    "tslint": "^6.1.1",
-    "typescript": "^3.8.3"
-  },
-  "dependencies": {}
+    "ts-node": "^10.9.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.9.4"
+  }
 }
