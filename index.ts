@@ -1,26 +1,26 @@
-import { decodeSentence as decodeAPB, APBPacket } from "./codecs/APB";
-import { decodeSentence as decodeBWC, BWCPacket } from "./codecs/BWC";
-import { decodeSentence as decodeDBT, encodePacket as encodeDBT, DBTPacket } from "./codecs/DBT";
-import { decodeSentence as decodeDTM, DTMPacket } from "./codecs/DTM";
-import { decodeSentence as decodeGGA, encodePacket as encodeGGA, GGAPacket } from "./codecs/GGA";
-import { decodeSentence as decodeGLL, encodePacket as encodeGLL, GLLPacket } from "./codecs/GLL";
-import { decodeSentence as decodeGNS, encodePacket as encodeGNS, GNSPacket } from "./codecs/GNS";
-import { decodeSentence as decodeGSA, GSAPacket } from "./codecs/GSA";
-import { decodeSentence as decodeGST, GSTPacket } from "./codecs/GST";
-import { decodeSentence as decodeGSV, GSVPacket } from "./codecs/GSV";
-import { decodeSentence as decodeHDG, HDGPacket } from "./codecs/HDG";
-import { decodeSentence as decodeHDM, encodePacket as encodeHDM, HDMPacket } from "./codecs/HDM";
-import { decodeSentence as decodeHDT, encodePacket as encodeHDT, HDTPacket } from "./codecs/HDT";
-import { decodeSentence as decodeMTK, encodePacket as encodeMTK, MTKPacket } from "./codecs/MTK";
-import { decodeSentence as decodeMWV, encodePacket as encodeMWV, MWVPacket } from "./codecs/MWV";
-import { decodeSentence as decodeRDID, RDIDPacket } from "./codecs/RDID";
-import { decodeSentence as decodeRMC, RMCPacket } from "./codecs/RMC";
-import { decodeSentence as decodeVHW, VHWPacket } from "./codecs/VHW";
-import { decodeSentence as decodeVTG, encodePacket as encodeVTG, VTGPacket } from "./codecs/VTG";
-import { decodeSentence as decodeZDA, ZDAPacket } from "./codecs/ZDA";
+import { decodeSentence as decodeAPB, type APBPacket } from "./codecs/APB";
+import { decodeSentence as decodeBWC, type BWCPacket } from "./codecs/BWC";
+import { decodeSentence as decodeDBT, encodePacket as encodeDBT, type DBTPacket } from "./codecs/DBT";
+import { decodeSentence as decodeDTM, type DTMPacket } from "./codecs/DTM";
+import { decodeSentence as decodeGGA, encodePacket as encodeGGA, type GGAPacket } from "./codecs/GGA";
+import { decodeSentence as decodeGLL, encodePacket as encodeGLL, type GLLPacket } from "./codecs/GLL";
+import { decodeSentence as decodeGNS, encodePacket as encodeGNS, type GNSPacket } from "./codecs/GNS";
+import { decodeSentence as decodeGSA, type GSAPacket } from "./codecs/GSA";
+import { decodeSentence as decodeGST, type GSTPacket } from "./codecs/GST";
+import { decodeSentence as decodeGSV, type GSVPacket } from "./codecs/GSV";
+import { decodeSentence as decodeHDG, type HDGPacket } from "./codecs/HDG";
+import { decodeSentence as decodeHDM, encodePacket as encodeHDM, type HDMPacket } from "./codecs/HDM";
+import { decodeSentence as decodeHDT, encodePacket as encodeHDT, type HDTPacket } from "./codecs/HDT";
+import { decodeSentence as decodeMTK, encodePacket as encodeMTK, type MTKPacket } from "./codecs/MTK";
+import { decodeSentence as decodeMWV, encodePacket as encodeMWV, type MWVPacket } from "./codecs/MWV";
+import { decodeSentence as decodeRDID, type RDIDPacket } from "./codecs/RDID";
+import { decodeSentence as decodeRMC, type RMCPacket } from "./codecs/RMC";
+import { decodeSentence as decodeVHW, type VHWPacket } from "./codecs/VHW";
+import { decodeSentence as decodeVTG, encodePacket as encodeVTG, type VTGPacket } from "./codecs/VTG";
+import { decodeSentence as decodeZDA, type ZDAPacket } from "./codecs/ZDA";
 
-import { parseStub, PacketStub } from "./codecs/PacketStub";
-import { decodeSentence as decodeUnknown, UnknownPacket } from "./codecs/UnknownPacket";
+import { parseStub, type PacketStub } from "./codecs/PacketStub";
+import { decodeSentence as decodeUnknown, type UnknownPacket } from "./codecs/UnknownPacket";
 import { validNmeaChecksum } from "./helpers";
 
 
